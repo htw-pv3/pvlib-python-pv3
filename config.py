@@ -197,3 +197,31 @@ def postgres_session():
                                               database)).connect()
     print('Password correct! Database connection established.')
     return con
+
+
+def write_to_csv(csv_name, df):
+    """Create CSV file or append data to it.
+
+    Parameters
+    ----------
+    csv_name : str
+        Name of file.
+    df : DataFrame
+        Sata saved to file.
+    append : bool
+        If False create a new CSV file (default), else append to it.
+    """
+    #if os.path.exists(os.path.dirname(csv_name)):
+    #    os.remove(os.path.dirname(csv_name))
+
+    if not os.path.exists(os.path.dirname(csv_name)):
+        os.makedirs(os.path.dirname(csv_name))
+
+    with open(csv_name, mode='a', encoding='utf-8') as file:
+        df.to_csv(file, sep=';',
+                    mode='a',
+                      header=file.tell() == 0,
+                      line_terminator='\n',
+                      encoding='utf-8')
+
+    log.info(f'Write data to file: {csv_name}')
