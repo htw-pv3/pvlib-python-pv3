@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 """parameter"""
 cfg = cp.RawConfigParser()
 config_file = 'config.ini'
-log_file = 'pv3_pv.log'
+log_file = 'pv3.log'
 
 
 def setup_logger():
