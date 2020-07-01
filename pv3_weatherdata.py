@@ -6,6 +6,31 @@ from pvlib.pvsystem import PVSystem
 from pvlib.location import Location
 
 
+def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
+    """
+
+    Returns
+    -------
+
+    """
+    df_solarpos = pvlib.solarposition.spa_python(df.index, lat, lon)
+
+    df_irradiance = pvlib.irradiance.erbs(ghi=df.loc[:, parameter_name],
+                                          zenith=df_solarpos.zenith,
+                                          datetime_or_doy=df.index.dayofyear)
+    df_irradiance = pd.DataFrame(df_irradiance)
+
+    return df_irradiance
+
+
+def read_weatherdata(file_name):
+    df = pd.read_csv(file_name, encoding='latin1', sep=';', index_col=0, parse_dates=True)  # , skiprows=3)
+
+    df = df.resample('H').mean()
+
+    return df
+
+
 def setup_converter_dataframe(converter, weather_data):
     """
     Reads HTW converter data from original files for given converter and sets
