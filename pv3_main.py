@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+HTW-PV3
+
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+"""
+
+__copyright__ = "© Ludwig Hülk"
+__license__ = "GNU Affero General Public License Version 3 (AGPL-3.0)"
+__url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
+__author__ = "Ludee;"
+__version__ = "v0.0.1"
+
+from config import setup_logger
+from config import postgres_session
+from pv3-htw-weatherdata-pvlib import setup_weather_dataframe
+
+import time
+
+
+DATA_VERSION = 'htw_pv3_v0.0.1'
+
+if __name__ == "__main__":
+
+    """logging"""
+    log = setup_logger()
+    start_time = time.time()
+    log.info(f'PV3 script started with data version: {DATA_VERSION}')
+
+    """database connection"""
+    con = postgres_session()
+
+    """weatherdata"""
+    setup_weather_dataframe
+
+    """close"""
+    log.info('MaSTR script successfully executed in {:.2f} seconds'
+             .format(time.time() - start_time))
