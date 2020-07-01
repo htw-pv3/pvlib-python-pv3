@@ -1,0 +1,10 @@
+name: d_py37_pv
+dependencies:
+    - python=3.7
+    - pandas
+    - scipy
+    - numpy
+    - sqlalchemy
+    - psycopg2
+    - collections
+    - pvlib
