@@ -16,6 +16,7 @@ __version__ = "v0.0.1"
 
 from config import setup_logger
 from config import postgres_session
+from pv3-htw-weatherdata-pvlib import setup_weather_dataframe
 
 import time
 
@@ -31,6 +32,9 @@ if __name__ == "__main__":
 
     """database connection"""
     con = postgres_session()
+
+    """weatherdata"""
+    setup_weather_dataframe
 
     """close"""
     log.info('MaSTR script successfully executed in {:.2f} seconds'

@@ -61,7 +61,7 @@ def setup_weather_dataframe(weather_data):
         and air temperature in °C.
 
     """
-    file_directory = 'data/htw_2015/einleuchtend_data_2015'
+    file_directory = 'data/pv3_2015'
     data = pd.read_csv(
         os.path.join(file_directory, 'htw_wetter_weatherdata_2015.csv'),
         sep=';', header=[0], index_col=[0], parse_dates=True)
