@@ -17,9 +17,10 @@ __author__ = "Ludee;"
 __version__ = "v0.0.1"
 
 import os
+import sys
+import getpass
 from sqlalchemy import *
 import configparser as cp
-
 import logging
 log = logging.getLogger(__name__)
 
@@ -171,7 +172,7 @@ def setup_config():
         token = input('Token:')
         # token = getpass.getpass(prompt='apiKey: ',
         #                            stream=sys.stderr)
-        lc.config_section_set(config_section, value=user, key=token)
+        config_section_set(config_section, value=user, key=token)
         print('Config file created.')
     return user, token
 
@@ -179,17 +180,14 @@ def setup_config():
 def postgres_session():
     """SQLAlchemy session object with valid connection to local database"""
 
-    #print('Please provide connection parameters to database:\n' +
-    #      'Hit [Enter] to take defaults')
-    #host = 'localhost'  # input('host (default 130.226.55.43): ')
-    #port = '5434'  # input('port (default 5432): ')
-    #database = 'sonnja_db'  # input("database name (default 'reeem'): ")
-    #user = 'sonnja'  # input('user (default postgres): ')
-    # password = input('password: ')
+    print('Please provide connection parameters to database:')
+    host = 'localhost'  # input('host (default 130.226.55.43): ')
+    port = '5434'  # input('port (default 5432): ')
+    database = 'sonnja_db'  # input("database name (default 'reeem'): ")
+    user = 'sonnja'  # input('user (default postgres): ')
+    password = input('password: ')
     #password = getpass.getpass(prompt='password: ',
     #                           stream=sys.stderr)
-
-
 
     con = create_engine(
         'postgresql://' + '%s:%s@%s:%s/%s' % (user,

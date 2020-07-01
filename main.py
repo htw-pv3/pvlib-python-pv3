@@ -15,13 +15,23 @@ __author__ = "Ludee;"
 __version__ = "v0.0.1"
 
 from config import setup_logger
+from config import postgres_session
+
 import time
+
 
 DATA_VERSION = 'htw_pv3_v0.0.1'
 
 if __name__ == "__main__":
+
+    """logging"""
     log = setup_logger()
     start_time = time.time()
     log.info(f'PV3 script started with data version: {DATA_VERSION}')
 
-    
+    """database connection"""
+    con = postgres_session()
+
+    """close"""
+    log.info('MaSTR script successfully executed in {:.2f} seconds'
+             .format(time.time() - start_time))
