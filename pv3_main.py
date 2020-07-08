@@ -16,7 +16,7 @@ __version__ = "v0.0.1"
 
 from config import setup_logger
 from config import postgres_session, write_to_csv
-from pv3_weatherdata import setup_weather_dataframe, calculate_diffuse_irradiation, read_weatherdata, create_pvsol
+from pv3_weatherdata import setup_weather_dataframe, calculate_diffuse_irradiation, read_weatherdata, create_polysun, create_pvsol
 import pandas as pd
 
 import time
@@ -36,6 +36,7 @@ if __name__ == "__main__":
     """weatherdata"""
     #htw_weather_data = setup_weather_dataframe(weather_data='open_FRED')
     #htw_weather_data.head()
+
     file_name = 'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\htw_wetter_weatherdata_2015.csv'
     df_w = read_weatherdata(file_name)
 
@@ -45,8 +46,23 @@ if __name__ == "__main__":
     parameter_name = 'G_hor_Si'   # GHI
     htw_weather_data_dhi_dni = calculate_diffuse_irradiation(df_w, parameter_name, lat, lon)
     htw_weather_data_dhi_dni.head()
+    # write_to_csv('./data/htw_weather_data_dhi_dni.csv', htw_weather_data_dhi_dni)
 
-    #write_to_csv('./data/htw_weather_data_dhi_dni.csv', htw_weather_data_dhi_dni)
+
+    # Export for Polysun
+    df_polysun = create_polysun(df_w, htw_weather_data_dhi_dni)
+    write_to_csv('./data/htw_pv3_polysun_2015.csv', df_polysun, index=False)
+
+    ## 1. Todo Doku
+    polysun_first_row = '# Station: HTW Berlin, PVlib\n'
+    ## 2. Todo Doku
+    polysun_second_row = '# Latitude: 52.4557 Longitude: -13.5239 altitude: 81m\n'
+    ## 3. Todo Doku
+    polysun_third_row = '#'
+    with open("./data/htw_pv3_polysun_2015.csv", "r+") as text_file:
+        content = text_file.read()
+        text_file.seek(0, 0)
+        text_file.write(polysun_first_row+polysun_second_row+polysun_third_row + '\n' + content)
 
 
     # Export for PVSol
