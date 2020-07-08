@@ -52,23 +52,26 @@ if __name__ == "__main__":
     # Export for PVSol
 
     ## 1. Die erste Zeile enthält den Namen des Standorts.
-    pvsol_first_row = 'Htw Wetter G_hor_si Stundenmittelwerte'
+    pvsol_first_row = 'Htw Wetter G_hor_si Stundenmittelwerte 2015\n'
 
     ## 2. Die zweite Zeile enthält Breitengrad, Längengrad, Höhe über NN, Zeitzone und ein Flag.
-    pvsol_second_row = '52.4557,-13.5239,81,-1,-30'
+    pvsol_second_row = '52.4557,-13.5239,81,-1,-30\n'
 
     ## 3. Die dritte Zeile bleibt leer
-    pvsol_third_row = ''
+    pvsol_third_row = '\n'
 
     ## 4. Vierte Zeile: Kopfzeile für Messwerte, mit 4 Spalten:
     # Ta - Umgebungstemperatur in °C
     # Gh - Globalstrahlung horizontal in Wh/m²
     # FF - Windgeschwindigkeit in m/s
     # RH - relative Luftfeuchtigkeit in %
+    pvsol_fourth_row = 'Ta\tGh\tFF\tRH'
 
-    pvsol_header = pd.DataFrame([x.split(';') for x in pvsol_third_row.split('\n')])
+    with open("./data/htw_pv3_pvsol_2015.dat", "w") as text_file:
+        text_file.write(pvsol_first_row+pvsol_second_row+pvsol_third_row+pvsol_fourth_row)
 
-    write_to_csv('./data/htw_pv3_pvsol_2015.dat', pvsol_header)
+    #htw_weather_data = "TODO"
+    #write_to_csv('./data/htw_pv3_pvsol_2015.dat', htw_weather_data)
 
     """close"""
     log.info('MaSTR script successfully executed in {:.2f} seconds'
