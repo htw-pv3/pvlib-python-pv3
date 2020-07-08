@@ -45,26 +45,28 @@ def search_dbs(path):
                 input_key = ''
         if input_key == '-':
             keywordlist = []
-        input_key = re.split(',| |_', input_key)
-        if len(input_key) < 2:
-            keywordlist.extend(input_key)
+            print('Cleared keyword list')
         else:
-            keywordlist.extend(input_key)
+            input_key = re.split(',| |_', input_key)
+            if len(input_key) < 2:
+                keywordlist.extend(input_key)
+            else:
+                keywordlist.extend(input_key)
 
-        print('#########')
-        print(keywordlist)
+            print('#########')
+            print(keywordlist)
 
-        results = {}
-        for name, db in dbs.items():
-            temp = [col for col, specs in db.iteritems() if all(key in col for key in keywordlist)]
-            if len(temp) >= 1:
-                results[name] = temp
+            results = {}
+            for name, db in dbs.items():
+                temp = [col for col, specs in db.iteritems() if all(key in col for key in keywordlist)]
+                if len(temp) >= 1:
+                    results[name] = temp
 
-        for name, db in results.items():
-            print('---------')
-            print(name)
-            print('---------')
-            print(db)
+            for name, db in results.items():
+                print('---------')
+                print(name)
+                print('---------')
+                print(db)
         input_key = input()
     if input_key == 'STOP':
         print('operation aborted')
