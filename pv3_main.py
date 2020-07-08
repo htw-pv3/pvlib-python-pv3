@@ -46,15 +46,23 @@ if __name__ == "__main__":
     parameter_name = 'G_hor_Si'   # GHI
     htw_weather_data_dhi_dni = calculate_diffuse_irradiation(df_w, parameter_name, lat, lon)
     htw_weather_data_dhi_dni.head()
+    # write_to_csv('./data/htw_weather_data_dhi_dni.csv', htw_weather_data_dhi_dni)
 
+
+    # Export for Polysun
     df_polysun = create_polysun(df_w, htw_weather_data_dhi_dni)
+    write_to_csv('./data/htw_pv3_polysun_2015.csv', df_polysun, index=False)
 
-    # first_row = '# Station: HTW Berlin, PVlib '
-    # second_row = '#Latitude: 52.4557 Longitude: -13.5239 altitude: ??m'
-
-    write_to_csv('./data/polysun.csv', df_polysun, index=False)
-
-    #write_to_csv('./data/htw_weather_data_dhi_dni.csv', htw_weather_data_dhi_dni)
+    ## 1. Todo Doku
+    polysun_first_row = '# Station: HTW Berlin, PVlib\n'
+    ## 2. Todo Doku
+    polysun_second_row = '# Latitude: 52.4557 Longitude: -13.5239 altitude: 81m\n'
+    ## 3. Todo Doku
+    polysun_third_row = '#'
+    with open("./data/htw_pv3_polysun_2015.csv", "r+") as text_file:
+        content = text_file.read()
+        text_file.seek(0, 0)
+        text_file.write(polysun_first_row+polysun_second_row+polysun_third_row + '\n' + content)
 
 
     # Export for PVSol
@@ -74,9 +82,8 @@ if __name__ == "__main__":
     # FF - Windgeschwindigkeit in m/s
     # RH - relative Luftfeuchtigkeit in %
 
-    pvsol_header = pd.DataFrame([x.split(';') for x in pvsol_third_row.split('\n')])
-
-    write_to_csv('./data/htw_pv3_pvsol_2015.dat', pvsol_header)
+    #pvsol_header = pd.DataFrame([x.split(';') for x in pvsol_third_row.split('\n')])
+    #write_to_csv('./data/htw_pv3_pvsol_2015.dat', pvsol_header)
 
     """close"""
     log.info('MaSTR script successfully executed in {:.2f} seconds'
