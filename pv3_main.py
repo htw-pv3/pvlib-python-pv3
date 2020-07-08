@@ -17,6 +17,7 @@ __version__ = "v0.0.1"
 from config import setup_logger
 from config import postgres_session, write_to_csv
 from pv3_weatherdata import setup_weather_dataframe, calculate_diffuse_irradiation, read_weatherdata
+import pandas as pd
 
 import time
 
@@ -45,8 +46,29 @@ if __name__ == "__main__":
     htw_weather_data_dhi_dni = calculate_diffuse_irradiation(df_w, parameter_name, lat, lon)
     htw_weather_data_dhi_dni.head()
 
-    write_to_csv('./data/htw_weather_data_dhi_dni.csv', htw_weather_data_dhi_dni)
+    #write_to_csv('./data/htw_weather_data_dhi_dni.csv', htw_weather_data_dhi_dni)
 
+
+    # Export for PVSol
+
+    ## 1. Die erste Zeile enthält den Namen des Standorts.
+    pvsol_first_row = 'Htw Wetter G_hor_si Stundenmittelwerte'
+
+    ## 2. Die zweite Zeile enthält Breitengrad, Längengrad, Höhe über NN, Zeitzone und ein Flag.
+    pvsol_second_row = '52.4557,-13.5239,81,-1,-30'
+
+    ## 3. Die dritte Zeile bleibt leer
+    pvsol_third_row = ''
+
+    ## 4. Vierte Zeile: Kopfzeile für Messwerte, mit 4 Spalten:
+    # Ta - Umgebungstemperatur in °C
+    # Gh - Globalstrahlung horizontal in Wh/m²
+    # FF - Windgeschwindigkeit in m/s
+    # RH - relative Luftfeuchtigkeit in %
+
+    pvsol_header = pd.DataFrame([x.split(';') for x in pvsol_third_row.split('\n')])
+
+    write_to_csv('./data/htw_pv3_pvsol_2015.dat', pvsol_header)
 
     """close"""
     log.info('MaSTR script successfully executed in {:.2f} seconds'
