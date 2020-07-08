@@ -199,7 +199,7 @@ def postgres_session():
     return con
 
 
-def write_to_csv(csv_name, df):
+def write_to_csv(csv_name, df, index=True):
     """Create CSV file or append data to it.
 
     Parameters
@@ -220,8 +220,9 @@ def write_to_csv(csv_name, df):
     with open(csv_name, mode='a', encoding='utf-8') as file:
         df.to_csv(file, sep=';',
                     mode='a',
-                      header=file.tell() == 0,
-                      line_terminator='\n',
-                      encoding='utf-8')
+                    header=file.tell() == 0,
+                    line_terminator='\n',
+                    encoding='utf-8',
+                    index=index)
 
     log.info(f'Write data to file: {csv_name}')
