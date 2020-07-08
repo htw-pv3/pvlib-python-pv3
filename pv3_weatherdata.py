@@ -184,3 +184,16 @@ def setup_htw_pvlib_pvsystem(converter_number):
     elif converter_number == 'wr5':
         pass
     return pv_module
+
+
+def create_pvsol(df_weatherdata):
+    PRINT_NAMES = {'G_hor_Si': 'Gh [W/m²]',
+                   'T_Luft': 'Ta [°C]',
+                   'v_Wind': 'FF [m/s]',
+                   'h_Luft': 'RH [%]'
+                   }
+
+    df_pvsol = df_weatherdata.loc[:, ['T_Luft', 'G_hor_Si',  'v_Wind', 'h_Luft']].reset_index(drop=True)
+    df_pvsol = df_pvsol.rename(columns=PRINT_NAMES)
+
+    return df_pvsol.round(1)
