@@ -193,9 +193,7 @@ def create_pvsol(df_weatherdata):
                    'h_Luft': 'RH [%]'
                    }
 
-
-    df_weatherdata.loc[:, ['T_Luft', 'G_hor_Si',  'v_Wind', 'h_Luft']].reset_index(drop=True)
-    df_pvsol = pd.DataFrame.from_dict(df_weatherdata)
+    df_pvsol = df_weatherdata.loc[:, ['T_Luft', 'G_hor_Si',  'v_Wind', 'h_Luft']].reset_index(drop=True)
     df_pvsol = df_pvsol.rename(columns=PRINT_NAMES)
 
     return df_pvsol.round(1)
