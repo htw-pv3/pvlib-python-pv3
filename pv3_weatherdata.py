@@ -216,3 +216,17 @@ def create_polysun(df_weatherdata, htw_weather_data_dhi_dni):
                  ['# Time [s]', 'Dh [W/m²]', 'Gh [W/m²]', 'Tamb [°C]', 'Lh [W/m²]', 'Wind [m/s]', 'Humidity [%]']]
 
     return df_polysun.round(1)
+
+  
+def create_pvsol(df_weatherdata):
+    PRINT_NAMES = {'G_hor_Si': 'Gh [W/m²]',
+                   'T_Luft': 'Ta [°C]',
+                   'v_Wind': 'FF [m/s]',
+                   'h_Luft': 'RH [%]'
+                   }
+
+    df_pvsol = df_weatherdata.loc[:, ['T_Luft', 'G_hor_Si',  'v_Wind', 'h_Luft']].reset_index(drop=True)
+    df_pvsol = df_pvsol.rename(columns=PRINT_NAMES)
+
+    return df_pvsol.round(1)
+
