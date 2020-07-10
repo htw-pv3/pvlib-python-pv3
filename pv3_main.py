@@ -93,6 +93,7 @@ if __name__ == "__main__":
 
     """open_FRED - weatherdata"""
 
+
     file_name = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\fred_data_2015_htw.csv'
 
     df_w, lat, lon = convert_open_FRED(file_name)
@@ -139,6 +140,7 @@ if __name__ == "__main__":
 
     htw_weather_data_pvsol = create_pvsol(df_w)
     write_to_csv('./data/FRED_pv3_pvsol_2015.dat', htw_weather_data_pvsol, index=False, sep='\t')
+
 
     """close"""
     log.info('PV3 weather converter script successfully executed in {:.2f} seconds'
