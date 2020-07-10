@@ -38,7 +38,7 @@ if __name__ == "__main__":
     #htw_weather_data = setup_weather_dataframe(weather_data='open_FRED')
     #htw_weather_data.head()
 
-    file_name = 'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\htw_wetter_weatherdata_2015.csv'
+    file_name = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\htw_wetter_weatherdata_2015.csv'
     df_w = read_weatherdata(file_name)
 
     # HTW coords
@@ -92,13 +92,14 @@ if __name__ == "__main__":
 
     """open_FRED - weatherdata"""
 
-    file_name = 'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\fred_data_2015_htw.csv'
+    file_name = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\fred_data_2015_htw.csv'
 
     df_w, lat, lon = convert_open_FRED(file_name)
 
     # Export for Polysun
 
-    df_polysun = create_polysun(df_w, htw_weather_data_dhi_dni)
+    # dhi doesnt have to be calculated as it is already inegrated
+    df_polysun = create_polysun(df_w, df_w)
     write_to_csv('./data/FRED_pv3_polysun_2015.csv', df_polysun, index=False)
 
     ## 1. Todo Doku
