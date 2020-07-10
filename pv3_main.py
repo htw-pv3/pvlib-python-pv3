@@ -52,7 +52,7 @@ if __name__ == "__main__":
     # Export for Polysun
 
     df_polysun = create_polysun(df_w, htw_weather_data_dhi_dni)
-    write_to_csv('./data/htw_pv3_polysun_2015.csv', df_polysun, index=False)
+    write_to_csv('./data/htw_pv3_polysun_2015.csv', df_polysun, append=False, index=False)
 
     ## 1. Todo Doku
     polysun_first_row = '# Station: HTW Berlin, PVlib\n'
