@@ -187,8 +187,8 @@ def setup_htw_pvlib_pvsystem(converter_number):
 
 
 def create_polysun(df_weatherdata, htw_weather_data_dhi_dni):
-    PRINT_NAMES = {'dhi': 'Dh [W/m²]',
-                   'G_hor_Si': 'Gh [W/m²]',
+    PRINT_NAMES = {'G_hor_Si': 'Gh [W/m²]',
+                   'dhi': 'Dh [W/m²]',
                    'T_Luft': 'Tamb [°C]',
                    'v_Wind': 'Vwnd [m/s]',
                    'h_Luft': 'Hrel [%]',
@@ -221,7 +221,7 @@ def create_polysun(df_weatherdata, htw_weather_data_dhi_dni):
 
 
     df_polysun = df_polysun.loc[:,
-                 ['# Time [s]', 'Gh', 'Dh', 'Tamb', 'Lh', 'Vwnd', 'Hrel']]
+                 ['# Time [s]', 'Gh [W/m²]', 'Dh [W/m²]', 'Tamb [°C]', 'Lh [W/m²]', 'Vwnd [m/s]', 'Hrel [%]']]
 
     return df_polysun.round(1)
 
