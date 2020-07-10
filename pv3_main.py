@@ -39,6 +39,7 @@ if __name__ == "__main__":
     #htw_weather_data.head()
 
     file_name = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\htw_wetter_weatherdata_2015.csv'
+    
     df_w = read_weatherdata(file_name)
 
     # HTW coords
@@ -100,7 +101,7 @@ if __name__ == "__main__":
 
     # dhi doesnt have to be calculated as it is already inegrated
     df_polysun = create_polysun(df_w, df_w)
-    write_to_csv('./data/FRED_pv3_polysun_2015.csv', df_polysun, index=False)
+    write_to_csv('./data/FRED_pv3_polysun_2015.csv', df_polysun, append=False, index=False)
 
     ## 1. Todo Doku
     polysun_first_row = '# Open_FRED Wetter Stundenmittelwerte 2015\n'
