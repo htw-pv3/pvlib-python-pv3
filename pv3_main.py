@@ -87,7 +87,7 @@ if __name__ == "__main__":
         text_file.write(pvsol_first_row+pvsol_second_row+pvsol_third_row+pvsol_fourth_row)
 
     htw_weather_data_pvsol = create_pvsol(df_w)
-    write_to_csv('./data/htw_pv3_pvsol_2015.dat', htw_weather_data_pvsol, index=False)
+    write_to_csv('./data/htw_pv3_pvsol_2015.dat', htw_weather_data_pvsol, index=False, sep='\t')
 
     """close"""
     log.info('MaSTR script successfully executed in {:.2f} seconds'
