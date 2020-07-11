@@ -238,3 +238,25 @@ def create_pvsol(df_weatherdata):
 
     return df_pvsol.round(1)
 
+
+def convert_open_FRED(file_name):
+    """converts open_FRED data into HTW_Weatherdata format"""
+    # read open_fred_weather_data
+    htw_weatherdata_names = {"ghi": "G_hor_Si",
+                             "wind_speed": 'v_Wind',
+                             "temp_air": 'T_Luft',
+                             }
+
+    df_open_fred = pd.read_csv(file_name, index_col=0, date_parser=pd.to_datetime)
+    df_open_fred = df_open_fred.resample('H').mean()
+
+    # 1 additional hour found, reduce to 8760 h
+    df_open_fred = df_open_fred.loc['2015-01-01 00:00':'2015-12-31 23:00']
+
+    df_open_fred['h_Luft'] = 0
+
+    df_open_fred = df_open_fred.rename(columns=htw_weatherdata_names)
+    lat = df_open_fred['lat'][0]
+    lon = df_open_fred['lon'][0]
+
+    return df_open_fred, lat, lon
