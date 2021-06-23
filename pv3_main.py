@@ -15,10 +15,12 @@ __author__ = "Ludee;"
 __version__ = "v0.0.1"
 
 from config import setup_logger
-from config import postgres_session, write_to_csv
+from utils import postgres_session
+from config import write_to_csv
 from pv3_weatherdata import setup_weather_dataframe,calculate_diffuse_irradiation,\
     read_weatherdata, create_polysun, create_pvsol, convert_open_FRED
 import pandas as pd
+from sqlalchemy import *
 
 import time
 
@@ -32,7 +34,8 @@ if __name__ == "__main__":
     start_time = time.time()
     log.info(f'PV3 script started with data version: {DATA_VERSION}')
 
-
+    """database"""
+    con = postgres_session()
 
     #################
     """HTW-weatherdata"""
@@ -42,6 +45,14 @@ if __name__ == "__main__":
     
     # read weatherdata
     df_w = read_weatherdata(file_name_htw)
+
+    sql = text("""
+        SELECT  timestamp, g_gen_cmp11, g_gen_si   -- column
+        FROM    pv3.pv3_time_sun_weather_allwr_2015_mview  -- table
+        """)
+    df_db_htw_weather = pd.read_sql_query(sql, con)
+    df_db_htw_weather = df_db_htw_weather.set_index('timestamp')
+    print(df_db_htw_weather.head(10))
 
     # HTW coords
     lat = 52.455778
