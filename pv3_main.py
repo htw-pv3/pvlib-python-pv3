@@ -101,7 +101,7 @@ if __name__ == "__main__":
     #################
 
 
-    file_name_fred = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\fred_data_2015_htw.csv'
+    file_name_fred = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
     
     df_w, lat, lon = convert_open_FRED(file_name_fred)
 
