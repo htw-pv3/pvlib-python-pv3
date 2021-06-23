@@ -13,9 +13,9 @@ def postgres_session():
     port = '5432'  # input('port (default 5432): ')
     database = 'sonnja_db'  # input("database name (default 'sonnja_db'): ")
     user = 'sonnja'  # input('user (default postgres): ')
-    # password = input('password: ')
-    password = getpass.getpass(prompt='password: ',
-                               stream=sys.stderr)
+    password = input('password: ')
+    #password = getpass.getpass(prompt='password: ',
+    #                           stream=sys.stderr)
     con = create_engine(
         'postgresql://' + '%s:%s@%s:%s/%s' % (user,
                                               password,
