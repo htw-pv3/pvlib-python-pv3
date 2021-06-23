@@ -38,7 +38,7 @@ if __name__ == "__main__":
     """HTW-weatherdata"""
     #################
 
-    file_name_htw = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\htw_wetter_weatherdata_2015.csv'
+    file_name_htw = r'.\data\pv3_2015\htw_wetter_weatherdata_2015.csv'
     
     # read weatherdata
     df_w = read_weatherdata(file_name_htw)
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     #################
 
 
-    file_name_fred = r'D:\git\github\htw-pv3\pvlib-python-pv3\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
+    file_name_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
     
     df_w, lat, lon = convert_open_FRED(file_name_fred)
 
