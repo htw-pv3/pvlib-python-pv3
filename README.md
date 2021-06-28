@@ -1,6 +1,6 @@
 # PV3 - SonnJA pvlib model
 
-<a href="https://github.com/htw-pv3"><img align="right" width="200" height="200" src="https://avatars.githubusercontent.com/u/64144501?s=200&v=4" alt="PV3"></a>
+<a href="https://github.com/htw-pv3"><img align="right" width="100" height="100" src="https://avatars.githubusercontent.com/u/64144501?s=200&v=4" alt="PV3"></a>
 
 ## License / Copyright
 
