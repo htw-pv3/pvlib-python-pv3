@@ -1,4 +1,4 @@
-name: d_py38_pv3vis
+name: d_py38_pv3
 dependencies:
     - python=3.8
     - jupyter
