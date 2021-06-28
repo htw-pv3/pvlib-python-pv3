@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 
 """
-HTW-PV3 Main file
+HTW-PV3 - Main file
 
+Export weatherdata for PVSOL and POLYSUN
+Run pvlib modell
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 """
@@ -12,11 +14,11 @@ __copyright__ = "© Ludwig Hülk"
 __license__ = "GNU Affero General Public License Version 3 (AGPL-3.0)"
 __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
-__version__ = "v0.0.1"
+__version__ = "v0.0.2"
 
-from config import setup_logger
-from utils import postgres_session
-from config import write_to_csv
+from settings import setup_logger
+from settings import postgres_session
+from settings import write_to_csv
 from pv3_weatherdata import setup_weather_dataframe,calculate_diffuse_irradiation,\
     read_weatherdata, create_polysun, create_pvsol, convert_open_FRED
 import pandas as pd
@@ -32,7 +34,7 @@ if __name__ == "__main__":
     """logging"""
     log = setup_logger()
     start_time = time.time()
-    log.info(f'PV3 script started with data version: {DATA_VERSION}')
+    log.info(f'PV3 model started with data version: {DATA_VERSION}')
 
     """database"""
     con = postgres_session()
@@ -48,7 +50,7 @@ if __name__ == "__main__":
 
     sql = text("""
         SELECT  timestamp, g_gen_cmp11, g_gen_si   -- column
-        FROM    pv3.pv3_time_sun_weather_allwr_2015_mview  -- table
+        FROM    pv3.pv3_weather_2015_filled_mview  -- table
         """)
     df_db_htw_weather = pd.read_sql_query(sql, con)
     df_db_htw_weather = df_db_htw_weather.set_index('timestamp')
