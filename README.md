@@ -10,9 +10,15 @@ This repository is licensed under [BSD 3-Clause License (BSD-3-Clause)](https://
 
 ### Setup environment
 
-conda env create -f requirements.yml
-activate d_py38_pv3
+`conda env create -f requirements.yml` <br>
+`activate d_py38_pv3`
 
-###
+### Setup folder and data
+
+Create a folder _data_ and _data/pv3_2015_
+Run SQL scripts to create and fill database with weather data: https://github.com/htw-pv3/weather-data/tree/master/postgresql
+
+Note: The data used is not provided due to licensing issues. <br>
+Please contact @Ludee for further information.
 
 
