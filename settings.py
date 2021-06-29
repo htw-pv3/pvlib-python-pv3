@@ -17,8 +17,7 @@ __author__ = "Ludee;"
 __version__ = "v0.0.1"
 
 import os
-import sys
-import getpass
+import pandas as pd
 from sqlalchemy import *
 
 import logging
@@ -90,6 +89,12 @@ def postgres_session():
                                               database)).connect()
     print('Password correct! Database connection established.')
     return con
+
+
+def read_from_csv(file_name):
+    df = pd.read_csv(file_name, encoding='latin1', sep=';', index_col=0, parse_dates=True)  # , skiprows=3)
+
+    return df
 
 
 def write_to_csv(csv_name, df, append=True, index=True, sep=';'):
