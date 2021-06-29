@@ -17,8 +17,8 @@ __version__ = "v0.0.2"
 
 import pandas as pd
 
-from settings import HTW_LAT, HTW_LON
 from pv3_weatherdata import calculate_diffuse_irradiation
+from settings import HTW_LAT, HTW_LON
 from settings import write_to_csv
 
 import logging

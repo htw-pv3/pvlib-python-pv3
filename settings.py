@@ -14,7 +14,7 @@ __copyright__ = "© Ludwig Hülk"
 __license__ = "GNU Affero General Public License Version 3 (AGPL-3.0)"
 __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
-__version__ = "v0.0.1"
+__version__ = "v0.0.2"
 
 import os
 import pandas as pd
