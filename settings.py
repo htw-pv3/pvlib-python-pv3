@@ -27,6 +27,8 @@ log = logging.getLogger(__name__)
 """parameter"""
 log_file = 'pv3.log'
 
+HTW_LAT = 52.45544
+HTW_LON = 13.52481
 
 def setup_logger():
     """Configure logging in console and log file.
