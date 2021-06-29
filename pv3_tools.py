@@ -12,7 +12,7 @@ import pvlib as pvl
 import re
 import os
 
-from config import setup_logger
+from settings import setup_logger
 
 """logging"""
 log = setup_logger()
