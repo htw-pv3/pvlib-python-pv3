@@ -1,10 +1,25 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+HTW-PV3 - Weatherdata functions
+
+
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+"""
+
+__copyright__ = "© Ludwig Hülk"
+__license__ = "GNU Affero General Public License Version 3 (AGPL-3.0)"
+__url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
+__author__ = "Ludee;"
+__version__ = "v0.0.2"
+
 import pandas as pd
 import os
 from datetime import timedelta
-import pvlib
-from pvlib.pvsystem import PVSystem
-from pvlib.location import Location
 
+import pvlib
 
 def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
     """
@@ -21,14 +36,6 @@ def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
     df_irradiance = pd.DataFrame(df_irradiance)
 
     return df_irradiance
-
-
-def read_weatherdata(file_name):
-    df = pd.read_csv(file_name, encoding='latin1', sep=';', index_col=0, parse_dates=True)  # , skiprows=3)
-
-    df = df.resample('H').mean()
-
-    return df
 
 
 def setup_converter_dataframe(converter, weather_data):
@@ -106,157 +113,3 @@ def setup_weather_dataframe(weather_data):
     data = data.tz_localize('Etc/GMT-1') # GMT+1??
     data = data.tz_convert('Europe/Berlin')
     return data
-
-
-def setup_pvlib_location_object():
-    """
-    Sets up pvlib Location object for HTW.
-
-    Returns
-    -------
-    :pvlib:`Location`
-
-    """
-    return Location(latitude=52.456032, longitude=13.525282,
-                    tz='Europe/Berlin', altitude=60, name='HTW Berlin')
-
-
-def setup_htw_pvlib_pvsystem(converter_number):
-    """
-    Sets up pvlib PVSystem for HTW Modules.
-
-    Parameters
-    -----------
-    converter_number : :obj:`str`
-        HTW converter number. Possible options are 'wr1', 'wr2', 'wr3', 'wr4',
-        'wr5'.
-
-    Returns
-    -------
-    :pvlib:`PVSystem`
-
-    """
-
-    # get module and inverter parameters
-    sandia_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
-    sandia_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
-    CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
-    CEC_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
-
-    inv_sma = 'SMA_Solar_Technology_AG__SB3000HFUS_30___240V_240V__CEC_2011_'
-    inv_danfoss = 'Danfoss_Solar__DLX_2_9_UL__240V__240V__CEC_2013_'
-
-    # module 1 - Schott aSi 105W / Danfoss DLX 2.9
-    if converter_number == 'wr1':
-        pass
-    # module 2 - Aleo S19 285W / Danfoss DLX 2.9 'Aleo_Solar_S19H270' CEC
-    elif converter_number == 'wr2':
-        pass
-
-    # module 3 - Aleo S18 240W / Danfoss DLX 2.9
-    elif converter_number == 'wr3':
-        pv_module = PVSystem(module='aleo_solar_S18_240', inverter=inv_danfoss,
-                             module_parameters=CEC_modules[
-                                 'aleo_solar_S18_240'],
-                             inverter_parameters=CEC_inverters[inv_danfoss],
-                             surface_tilt=14.57, surface_azimuth=215.,
-                             albedo=0.2,
-                             modules_per_string=14, strings_per_inverter=1,
-                             name='HTW_module_3')
-        pv_module.module_parameters['EgRef'] = 1.121
-        pv_module.module_parameters['dEgdT'] = -0.0002677
-        pv_module.module_parameters['alpha_sc'] = 0.04
-
-    # module 4 - Aleo S19 245W / SMA SB 3000HF-30
-    elif converter_number == 'wr4':
-        pv_module = PVSystem(module='Aleo_Solar_S19U245_ulr', inverter=inv_sma,
-                             module_parameters=CEC_modules[
-                                 'Aleo_Solar_S19U245_ulr'],
-                             inverter_parameters=CEC_inverters[inv_sma],
-                             surface_tilt=14.57, surface_azimuth=215.,
-                             albedo=0.2,
-                             modules_per_string=13, strings_per_inverter=1,
-                             name='HTW_module_4')
-        pv_module.module_parameters['EgRef'] = 1.121
-        pv_module.module_parameters['dEgdT'] = -0.0002677
-        pv_module.module_parameters['alpha_sc'] = 0.03
-    # module 5 - Schott aSi 105W / SMA SB 3000HF-30
-    elif converter_number == 'wr5':
-        pass
-    return pv_module
-
-
-def create_polysun(df_weatherdata, htw_weather_data_dhi_dni):
-    PRINT_NAMES = {'G_hor_Si': 'Gh [W/m²]',
-                   'dhi': 'Dh [W/m²]',
-                   'T_Luft': 'Tamb [°C]',
-                   'v_Wind': 'Vwnd [m/s]',
-                   'h_Luft': 'Hrel [%]',
-                   }
-
-
-    polysun = {}
-    s = 3600
-    steps = 8760
-    time = list(zip(range(steps), [s * i for i in range(steps)]))
-    polysun = {'# Time [s]': dict(time)}
-
-    polysun.update(
-        df_weatherdata.loc[:, ['G_hor_Si', 'T_Luft', 'v_Wind', 'h_Luft']].reset_index(drop=True).to_dict())
-
-    df_polysun = pd.DataFrame.from_dict(polysun)
-    df_polysun = df_polysun.merge(htw_weather_data_dhi_dni['dhi'].reset_index(drop=True),
-                                  left_index=True, right_index=True)
-
-    # zero values as not needed
-    df_polysun['Lh [W/m²]'] = 0
-
-    df_polysun = df_polysun.rename(columns=PRINT_NAMES)
-
-    # Gh Globalstrahlung[Wh / m2]
-    # Dh Diffusstrahlung[Wh / m2]
-    # Lh Langwellenstrahlung[Wh / m2]
-    # Tamb Umgebungstemperatur[°C]VwndWind[m / s]
-    # Hrel Luftfeuchtigkeit[%]
-
-
-    df_polysun = df_polysun.loc[:,
-                 ['# Time [s]', 'Gh [W/m²]', 'Dh [W/m²]', 'Tamb [°C]', 'Lh [W/m²]', 'Vwnd [m/s]', 'Hrel [%]']]
-
-    return df_polysun.round(1)
-
-  
-def create_pvsol(df_weatherdata):
-    PRINT_NAMES = {'G_hor_Si': 'Gh [W/m²]',
-                   'T_Luft': 'Ta [°C]',
-                   'v_Wind': 'FF [m/s]',
-                   'h_Luft': 'RH [%]'
-                   }
-
-    df_pvsol = df_weatherdata.loc[:, ['T_Luft', 'G_hor_Si',  'v_Wind', 'h_Luft']].reset_index(drop=True)
-    df_pvsol = df_pvsol.rename(columns=PRINT_NAMES)
-
-    return df_pvsol.round(1)
-
-
-def convert_open_FRED(file_name):
-    """converts open_FRED data into HTW_Weatherdata format"""
-    # read open_fred_weather_data
-    htw_weatherdata_names = {"ghi": "G_hor_Si",
-                             "wind_speed": 'v_Wind',
-                             "temp_air": 'T_Luft',
-                             }
-
-    df_open_fred = pd.read_csv(file_name, index_col=0, date_parser=pd.to_datetime)
-    df_open_fred = df_open_fred.resample('H').mean()
-
-    # 1 additional hour found, reduce to 8760 h
-    df_open_fred = df_open_fred.loc['2015-01-01 00:00':'2015-12-31 23:00']
-
-    df_open_fred['h_Luft'] = 0
-
-    df_open_fred = df_open_fred.rename(columns=htw_weatherdata_names)
-    lat = df_open_fred['lat'][0]
-    lon = df_open_fred['lon'][0]
-
-    return df_open_fred, lat, lon
