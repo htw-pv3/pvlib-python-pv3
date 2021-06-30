@@ -3,10 +3,10 @@ import numpy as np
 
 
 sma_sb_data = {
-    "ac_power": [750., 2271, 3000],  # Annahme: Strom bleibt in allen Punkten gleich
-    "dc_power": [788., 2385, 3150],  # Annahme: Strom bleibt in allen Punkten gleich
+    "ac_power": np.array([750., 2271, 3000]),  # Annahme: Strom bleibt in allen Punkten gleich
+    "dc_power": np.array([788., 2385, 3150]),  # Annahme: Strom bleibt in allen Punkten gleich
     "dc_voltage": np.array([175, 530, 700]),
-    "dc_voltage_level": ["Vmin", "Vnom", "Vmax"],
+    "dc_voltage_level": np.array(["Vmin", "Vnom", "Vmax"]),
     "p_ac_0": 3150.,
     "p_nt": 1.
 }
