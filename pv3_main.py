@@ -96,13 +96,14 @@ if __name__ == "__main__":
     # weather data
     df_fred_pvlib = df_fred.resample('H').mean()
 
-    mc = setup_modelchain(wr3, htw_location)
+    mc3 = setup_modelchain(wr3, htw_location)
 
-    run_modelchain(mc, df_fred_pvlib)
+    run_modelchain(mc3, df_fred_pvlib)
+    run_modelchain(mc3, df_htw)
 
-    print(mc.aoi)
-    print(mc.dc)
-    print(mc.ac)
+    print(mc3.aoi)
+    print(mc3.dc)
+    print(mc3.ac)
 
     """close"""
     log.info('PV3 weather converter script successfully executed in {:.2f} seconds'
