@@ -106,9 +106,9 @@ def setup_htw_pvlib_pvsystems(converter_number):
     return pv_module
 
 
-def setup_htw_pvsystem_wr1():
+#def setup_htw_pvsystem_wr1():
 
-def setup_htw_pvsystem_wr2():
+#def setup_htw_pvsystem_wr2():
 
 def setup_htw_pvsystem_wr3():
 

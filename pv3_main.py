@@ -99,7 +99,7 @@ if __name__ == "__main__":
     mc3 = setup_modelchain(wr3, htw_location)
 
     run_modelchain(mc3, df_fred_pvlib)
-    run_modelchain(mc3, df_htw)
+    #run_modelchain(mc3, df_htw) # Add DHI
 
     print(mc3.aoi)
     print(mc3.dc)
