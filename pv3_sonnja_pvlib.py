@@ -108,11 +108,16 @@ def setup_htw_pvlib_pvsystems(converter_number):
 
 def setup_htw_pvsystem_wr1():
 
+    # Download parameters for pv and inverters
     sam_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
+    CEC_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
 
+    converter_number = 'wr1'
+    inv_danfoss = 'Danfoss_Solar__DLX_2_9_UL__240V__240V__CEC_2013_'
     pv1_module = 'Schott_Solar_ASE_100_ATF_34__100___1999__E__'
 
     model_wr1 = PVSystem(module=pv1_module,
+                         inverter=inv_danfoss,
 
 
 #def setup_htw_pvsystem_wr2():
