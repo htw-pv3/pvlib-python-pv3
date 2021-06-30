@@ -39,11 +39,11 @@ if __name__ == "__main__":
 
     """Read data"""
     # read htw weatherdata from file
-    fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
-    df_htw_file = read_from_csv(fn_htw)
+    # fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
+    # df_htw_file = read_from_csv(fn_htw)
 
-    fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
-    df_fred_file = read_from_csv(fn_fred)
+    # fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
+    # df_fred_file = read_from_csv(fn_fred)
 
     # read htw weatherdata from sonnja_db
     sql = text("""
@@ -82,6 +82,9 @@ if __name__ == "__main__":
     # Export FRED for PVSOL
     fn_fred_pvsol = 'pv3_fred_pvsol_1h_2015.dat'
     export_fred_pvsol(df_fred, fn_fred_pvsol)
+
+
+    # Run pvlib model
 
 
     """close"""

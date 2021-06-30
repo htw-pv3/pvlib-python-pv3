@@ -35,7 +35,7 @@ def setup_pvlib_location_object():
 
     """
     return Location(latitude=HTW_LAT, longitude=HTW_LON,
-                    tz='Europe/Berlin', altitude=60, name='HTW Berlin')
+                    tz='Europe/Berlin', altitude=80, name='HTW Berlin')
 
 
 def setup_htw_pvlib_pvsystem(converter_number):
