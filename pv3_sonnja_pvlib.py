@@ -106,7 +106,14 @@ def setup_htw_pvlib_pvsystems(converter_number):
     return pv_module
 
 
-#def setup_htw_pvsystem_wr1():
+def setup_htw_pvsystem_wr1():
+
+    sam_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
+
+    pv1_module = 'Schott_Solar_ASE_100_ATF_34__100___1999__E__'
+
+    model_wr1 = PVSystem(module=pv1_module,
+
 
 #def setup_htw_pvsystem_wr2():
 
