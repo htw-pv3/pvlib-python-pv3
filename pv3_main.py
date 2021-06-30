@@ -19,6 +19,7 @@ __version__ = "v0.0.2"
 from settings import setup_logger, postgres_session, read_from_csv
 from pv3_export_polysun import export_htw_polysun, export_fred_polysun
 from pv3_export_pvsol import export_htw_pvsol, export_fred_pvsol
+from pv3_sonnja_pvlib import setup_pvlib_location_object, setup_modelchain, run_modelchain, setup_htw_pvsystem_wr3
 
 import pandas as pd
 from sqlalchemy import *
@@ -39,11 +40,11 @@ if __name__ == "__main__":
 
     """Read data"""
     # read htw weatherdata from file
-    fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
-    df_htw_file = read_from_csv(fn_htw)
+    # fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
+    # df_htw_file = read_from_csv(fn_htw)
 
-    fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
-    df_fred_file = read_from_csv(fn_fred)
+    # fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
+    # df_fred_file = read_from_csv(fn_fred)
 
     # read htw weatherdata from sonnja_db
     sql = text("""
@@ -61,28 +62,48 @@ if __name__ == "__main__":
     df_fred = pd.read_sql_query(sql, con)
     df_fred = df_fred.set_index('timestamp')
 
-    """Export data"""
-    # Export HTW for POLYSUN
-    fn_polysun = 'pv3_htw_polysun_1min_2015.csv'
-    export_htw_polysun(df_htw, fn_polysun, 'M', 'g_hor_si')
+    # """Export data"""
+    # # Export HTW for POLYSUN
+    # fn_polysun = 'pv3_htw_polysun_1min_2015.csv'
+    # export_htw_polysun(df_htw, fn_polysun, 'M', 'g_hor_si')
+    #
+    # file_name_polysun_1h = 'pv3_htw_polysun_1h_2015.csv'
+    # df_db_htw_weather_1h = df_htw.resample('1H').mean()
+    # export_htw_polysun(df_db_htw_weather_1h, file_name_polysun_1h, 'H', 'g_hor_si')
+    #
+    # # Export HTW for PVSOL
+    # file_name_pvsol_1h = 'pv3_htw_pvsol_1h_2015.dat'
+    # df_db_htw_weather_1h = df_htw.resample('1H').mean()
+    # export_htw_pvsol(df_db_htw_weather_1h, file_name_pvsol_1h)
+    #
+    # # Export FRED for POLYSUN
+    # fn_fred_polysun = 'pv3_fred_polysun_1h_2015.csv'
+    # export_fred_polysun(df_fred, fn_fred_polysun, 'H')
+    #
+    # # Export FRED for PVSOL
+    # fn_fred_pvsol = 'pv3_fred_pvsol_1h_2015.dat'
+    # export_fred_pvsol(df_fred, fn_fred_pvsol)
 
-    file_name_polysun_1h = 'pv3_htw_polysun_1h_2015.csv'
-    df_db_htw_weather_1h = df_htw.resample('1H').mean()
-    export_htw_polysun(df_db_htw_weather_1h, file_name_polysun_1h, 'H', 'g_hor_si')
 
-    # Export HTW for PVSOL
-    file_name_pvsol_1h = 'pv3_htw_pvsol_1h_2015.dat'
-    df_db_htw_weather_1h = df_htw.resample('1H').mean()
-    export_htw_pvsol(df_db_htw_weather_1h, file_name_pvsol_1h)
+    # Run pvlib model
 
-    # Export FRED for POLYSUN
-    fn_fred_polysun = 'pv3_fred_polysun_1h_2015.csv'
-    export_fred_polysun(df_fred, fn_fred_polysun, 'H')
+    # location
+    htw_location = setup_pvlib_location_object()
 
-    # Export FRED for PVSOL
-    fn_fred_pvsol = 'pv3_fred_pvsol_1h_2015.dat'
-    export_fred_pvsol(df_fred, fn_fred_pvsol)
+    # pv system
+    wr3 = setup_htw_pvsystem_wr3()
+    print(wr3)
+    # weather data
+    df_fred_pvlib = df_fred.resample('H').mean()
 
+    mc3 = setup_modelchain(wr3, htw_location)
+
+    run_modelchain(mc3, df_fred_pvlib)
+    #run_modelchain(mc3, df_htw) # Add DHI
+
+    print(mc3.aoi)
+    print(mc3.dc)
+    print(mc3.ac)
 
     """close"""
     log.info('PV3 weather converter script successfully executed in {:.2f} seconds'
