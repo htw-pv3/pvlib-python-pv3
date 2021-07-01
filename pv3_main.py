@@ -40,27 +40,27 @@ if __name__ == "__main__":
 
     """Read data"""
     # read htw weatherdata from file
-    # fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
-    # df_htw_file = read_from_csv(fn_htw)
+    fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
+    df_htw = read_from_csv(fn_htw)
 
-    # fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
-    # df_fred_file = read_from_csv(fn_fred)
+    fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
+    df_fred = pd.read_csv(fn_fred, encoding='latin1', sep=',', index_col=0, parse_dates=True)
 
     # read htw weatherdata from sonnja_db
-    sql = text("""
-        SELECT  *                                  -- column
-        FROM    pv3.pv3_weather_2015_filled_mview  -- table
-        """)
-    df_htw = pd.read_sql_query(sql, con)
-    df_htw = df_htw.set_index('timestamp')
-
-    # read open_FRED weatherdata from sonnja_db
-    sql = text("""
-        SELECT  *                                  -- column
-        FROM    pv3.openfred_weatherdata_2015_htw  -- table
-        """)
-    df_fred = pd.read_sql_query(sql, con)
-    df_fred = df_fred.set_index('timestamp')
+    # sql = text("""
+    #     SELECT  *                                  -- column
+    #     FROM    pv3.pv3_weather_2015_filled_mview  -- table
+    #     """)
+    # df_htw = pd.read_sql_query(sql, con)
+    # df_htw = df_htw.set_index('timestamp')
+    #
+    # # read open_FRED weatherdata from sonnja_db
+    # sql = text("""
+    #     SELECT  *                                  -- column
+    #     FROM    pv3.openfred_weatherdata_2015_htw  -- table
+    #     """)
+    # df_fred = pd.read_sql_query(sql, con)
+    # df_fred = df_fred.set_index('timestamp')
 
     # """Export data"""
     # # Export HTW for POLYSUN

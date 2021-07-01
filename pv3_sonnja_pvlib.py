@@ -68,10 +68,31 @@ def setup_htw_pvlib_pvsystems(converter_number):
 
     # module 1 - Schott aSi 105W / Danfoss DLX 2.9
     if converter_number == 'wr1':
-        pass
+        pv_module = PVSystem(module='schott_aSi_105', inverter=inv_danfoss,
+                             module_parameters=CEC_modules[
+                                 'schott_aSi_105'],
+                             inverter_parameters=CEC_inverters[inv_danfoss],
+                             surface_tilt=14.57, surface_azimuth=215.,
+                             albedo=0.2,
+                             modules_per_string=10, strings_per_inverter=3,
+                             name='HTW_module_1')
+        pv_module.module_parameters['EgRef'] = 1.121
+        pv_module.module_parameters['dEgdT'] = -0.0002677
+        pv_module.module_parameters['alpha_sc'] = 0.04
+
     # module 2 - Aleo S19 285W / Danfoss DLX 2.9 'Aleo_Solar_S19H270' CEC
     elif converter_number == 'wr2':
-        pass
+        pv_module = PVSystem(module='aleo_solar_S19_285', inverter=inv_danfoss,
+                             module_parameters=CEC_modules[
+                                 'aleo_solar_S19_285'],
+                             inverter_parameters=CEC_inverters[inv_danfoss],
+                             surface_tilt=14.57, surface_azimuth=215.,
+                             albedo=0.2,
+                             modules_per_string=11, strings_per_inverter=1,
+                             name='HTW_module_2')
+        pv_module.module_parameters['EgRef'] = 1.121
+        pv_module.module_parameters['dEgdT'] = -0.0002677
+        pv_module.module_parameters['alpha_sc'] = 0.04
 
     # module 3 - Aleo S18 240W / Danfoss DLX 2.9
     elif converter_number == 'wr3':
@@ -102,7 +123,17 @@ def setup_htw_pvlib_pvsystems(converter_number):
         pv_module.module_parameters['alpha_sc'] = 0.03
     # module 5 - Schott aSi 105W / SMA SB 3000HF-30
     elif converter_number == 'wr5':
-        pass
+        pv_module = PVSystem(module='schott_aSi_105', inverter=inv_danfoss,
+                             module_parameters=CEC_modules[
+                                 'schott_aSi_105'],
+                             inverter_parameters=CEC_inverters[inv_danfoss],
+                             surface_tilt=14.57, surface_azimuth=215.,
+                             albedo=0.2,
+                             modules_per_string=10, strings_per_inverter=3,
+                             name='HTW_module_5')
+        pv_module.module_parameters['EgRef'] = 1.121
+        pv_module.module_parameters['dEgdT'] = -0.0002677
+        pv_module.module_parameters['alpha_sc'] = 0.04
     return pv_module
 
 
@@ -118,6 +149,7 @@ def setup_htw_pvsystem_wr1():
 
     model_wr1 = PVSystem(module=pv1_module,
                          inverter=inv_danfoss,
+                         )
 
 
 #def setup_htw_pvsystem_wr2():
