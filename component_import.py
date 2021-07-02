@@ -49,7 +49,7 @@ def get_sma_sb_3000hf():
 
 def get_danfoss_dlx_2_9():
     """
-    Import the Inverter SMA SUNNY BOY 3000HF to pvlib
+    Import the Inverter Danfoss DLX 2.9 to pvlib
 
     :return:
     inverter dictionary, type: sandia model
