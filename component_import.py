@@ -9,7 +9,7 @@ def get_sma_sb_3000hf():
     :return:
     inverter dictionary, type: sandia model
     """
-    # inverter efficiency at different power points
+    # inverter efficiency at different power points (source: SMA WirkungDerat-TI-de-36 | Version 3.6)
     eta_min = [0, 0.942, 0.95, 0.951, 0.94, 0.932]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 210V
     eta_nom = [0, 0.953, 0.961, 0.963, 0.96, 0.954]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 530V
     eta_max = [0, 0.951, 0.959, 0.96, 0.96, 0.955]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 560V
@@ -54,12 +54,12 @@ def get_danfoss_dlx_2_9():
     :return:
     inverter dictionary, type: sandia model
     """
-    # TODO: inverter efficiency at different power points
-    eta_min = [0, 0.945, 0.95, 0.947, 0.942, 0.931]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 210V
-    eta_nom = [0, 0.953, 0.962, 0.963, 0.96, 0.952]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 530V
-    eta_max = [0, 0.95, 0.96, 0.962, 0.961, 0.9524]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 560V
-    # TODO: dc voltage at min, nom and max
-    dc_voltage = [[175.], [530.], [560.]]
+    # inverter efficiency at different power points (source: PV*SOL)
+    eta_min = [0, 0.953, 0.959, 0.963, 0.9612, 0.959]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 210V
+    eta_nom = [0, 0.961, 0.967, 0.971, 0.969, 0.967]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 530V
+    eta_max = [0, 0.952, 0.958, 0.962, 0.96, 0.958]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 560V
+    # dc voltage at min, nom and max
+    dc_voltage = [[230.], [350.], [480.]]
     # calculate dc power
     p_dc_nom = 3750
     p_dc = [0, 0.2 * p_dc_nom, 0.3 * p_dc_nom, 0.5 * p_dc_nom, 0.75 * p_dc_nom, 1 * p_dc_nom]
@@ -93,5 +93,7 @@ def get_danfoss_dlx_2_9():
 
 
 if __name__ == "__main__":
-    inv = get_sma_sb_3000hf()
-    print(inv)
+    sma = get_sma_sb_3000hf()
+    print(sma)
+    dan = get_danfoss_dlx_2_9()
+    print(dan)
