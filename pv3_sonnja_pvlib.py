@@ -39,8 +39,6 @@ def setup_pvlib_location_object():
                     tz='Europe/Berlin', altitude=80, name='HTW Berlin')
 
 
-
-
 def setup_htw_pvlib_pvsystems(converter_number):
     """
     Sets up pvlib PVSystem for HTW Modules.
@@ -118,6 +116,7 @@ def setup_htw_pvsystem_wr1():
 
     model_wr1 = PVSystem(module=pv1_module,
                          inverter=inv_danfoss,
+                         )
 
 
 #def setup_htw_pvsystem_wr2():
@@ -145,7 +144,6 @@ def setup_htw_pvsystem_wr3():
                          name='HTW_WR3')
 
     return model_wr3
-
 
 
 def setup_modelchain(pv_system, location):
