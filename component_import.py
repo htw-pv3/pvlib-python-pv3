@@ -54,11 +54,11 @@ def get_danfoss_dlx_2_9():
     :return:
     inverter dictionary, type: sandia model
     """
-    # inverter efficiency at different power points
+    # TODO: inverter efficiency at different power points
     eta_min = [0, 0.945, 0.95, 0.947, 0.942, 0.931]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 210V
     eta_nom = [0, 0.953, 0.962, 0.963, 0.96, 0.952]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 530V
     eta_max = [0, 0.95, 0.96, 0.962, 0.961, 0.9524]  # P/P_max = 0, 0.2, 0.3, 0.5, 0.75, 1; U = 560V
-    # dc voltage at min, nom and max
+    # TODO: dc voltage at min, nom and max
     dc_voltage = [[175.], [530.], [560.]]
     # calculate dc power
     p_dc_nom = 3750
@@ -82,7 +82,7 @@ def get_danfoss_dlx_2_9():
         "dc_power": np.array(p_dc + p_dc + p_dc),  # Annahme: Strom bleibt in allen Punkten gleich
         "dc_voltage": np.array(dc_voltage[0] * val_count + dc_voltage[1] * val_count + dc_voltage[2] * val_count),
         "dc_voltage_level": np.array(["Vmin"] * val_count + ["Vnom"] * val_count + ["Vmax"] * val_count),
-        "p_ac_0": 3000.,
+        "p_ac_0": 2900.,
         "p_nt": 1.
     }
 
