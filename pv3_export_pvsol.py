@@ -102,6 +102,9 @@ def export_fred_pvsol(df, filename):
     with open(f'./data/{filename}', "w") as text_file:
         text_file.write(pvsol_first_row + pvsol_second_row + pvsol_third_row + pvsol_fourth_row)
 
-    write_to_csv(f'./data/{filename}', df, index=False, sep='\t')
+    df_pvsol = df.loc[:, ['t_luft', 'g_hor_si',  'v_wind', 'h_luft']].reset_index(drop=True)
+    df_pvsol = df_pvsol.round(1)
+
+    write_to_csv(f'./data/{filename}', df_pvsol, index=False, sep='\t')
 
     log.info(f'Write data to file: {filename}')
