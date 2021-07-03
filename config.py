@@ -22,6 +22,7 @@ import configparser as cp
 cfg = cp.RawConfigParser()
 config_file = 'config.ini'
 
+
 def config_section_set(config_section, host, port, user, pw):
     """Create a config file.
 

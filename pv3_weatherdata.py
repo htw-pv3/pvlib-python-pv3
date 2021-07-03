@@ -21,6 +21,7 @@ from datetime import timedelta
 
 import pvlib
 
+
 def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
     """
 

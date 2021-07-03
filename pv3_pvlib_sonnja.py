@@ -349,9 +349,6 @@ def plot_time_range(data, time_range, filename, plot_directory,
     mpl.savefig(os.path.join(plot_directory, '{}.png'.format(filename)))
 
 
-
-
-
 def compare_parameters_2(dict, parameter, resample_rule, plot_directory):
     """
     Calculates and plots correlation and RMSE between three time series.
