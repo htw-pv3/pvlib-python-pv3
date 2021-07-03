@@ -22,6 +22,8 @@ from pvlib.modelchain import ModelChain
 
 from settings import HTW_LAT, HTW_LON
 
+from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -106,36 +108,36 @@ def setup_htw_pvlib_pvsystems(converter_number):
 
 def setup_htw_pvsystem_wr1():
 
-    # Download parameters for pv and inverters
+    # Download parameters for pv
     sam_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
-    CEC_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
 
     converter_number = 'wr1'
-    inv_danfoss = 'Danfoss_Solar__DLX_2_9_UL__240V__240V__CEC_2013_'
+    inv = 'Danfoss_Solar__DLX_2_9'
+    inv_data = get_danfoss_dlx_2_9()
     pv1_module = 'Schott_Solar_ASE_100_ATF_34__100___1999__E__'
 
     model_wr1 = PVSystem(module=pv1_module,
-                         inverter=inv_danfoss,
+                         inverter=inv,
                          )
 
 
 #def setup_htw_pvsystem_wr2():
 
+
 def setup_htw_pvsystem_wr3():
 
-    # Download parameters for pv and inverters
+    # Download parameters for pv
     CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
-    CEC_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
-    sam_adr_inv = pvlib.pvsystem.retrieve_sam('ADRInverter')
 
     converter_number = 'wr3'
-    inv_danfoss = 'Danfoss_Solar__DLX_2_9_UL__240V__240V__CEC_2013_'
+    inv = 'Danfoss_Solar__DLX_2_9'
+    inv_data = get_danfoss_dlx_2_9()
     pv3_module = 'Aleo_Solar_P18y255'
 
     model_wr3 = PVSystem(module=pv3_module,
-                         inverter=inv_danfoss,
+                         inverter=inv,
                          module_parameters=CEC_modules[pv3_module],
-                         inverter_parameters=sam_adr_inv[inv_danfoss],
+                         inverter_parameters=inv_data,
                          surface_tilt=14.57,
                          surface_azimuth=215.,
                          albedo=0.2,
@@ -144,6 +146,30 @@ def setup_htw_pvsystem_wr3():
                          name='HTW_WR3')
 
     return model_wr3
+
+
+def setup_htw_pvsystem_wr4():
+
+    # Download parameters for pv
+    CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
+
+    converter_number = 'wr3'
+    inv = 'SMA_SB_3000HF_30'
+    inv_data = get_sma_sb_3000hf()
+    wr4_module = 'Aleo_Solar_P18y255'
+
+    model_wr4 = PVSystem(module=wr4_module,
+                         inverter=inv,
+                         module_parameters=CEC_modules[wr4_module],
+                         inverter_parameters=inv_data,
+                         surface_tilt=14.57,
+                         surface_azimuth=215.,
+                         albedo=0.2,
+                         modules_per_string=14,
+                         strings_per_inverter=1,
+                         name='HTW_WR3')
+
+    return model_wr4
 
 
 def setup_modelchain(pv_system, location):
