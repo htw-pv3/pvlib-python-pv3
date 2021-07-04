@@ -22,7 +22,7 @@ from pvlib.modelchain import ModelChain
 
 from settings import HTW_LAT, HTW_LON
 
-from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s18_240, get_aleo_s19_245
+from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s18_240, get_aleo_s19_245, get_schott_asi_105
 
 import logging
 log = logging.getLogger(__name__)
@@ -108,17 +108,15 @@ def setup_htw_pvlib_pvsystems(converter_number):
 
 def setup_htw_pvsystem_wr1():
 
-    # Download parameters for pv
-    sam_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
-
     converter_number = 'wr1'
     inv = 'Danfoss_Solar__DLX_2_9'
     inv_data = get_danfoss_dlx_2_9()
-    wr1_module = 'Schott_Solar_ASE_100_ATF_34__100___1999__E__'
+    wr1_module = 'Schott a-Si 105 W'
+    module_data = get_schott_asi_105()
 
     model_wr1 = PVSystem(module=wr1_module,
                          inverter=inv,
-                         module_parameters=sam_modules[wr1_module],
+                         module_parameters=module_data,
                          inverter_parameters=inv_data,
                          surface_tilt=14.57,
                          surface_azimuth=215.,
@@ -199,17 +197,15 @@ def setup_htw_pvsystem_wr4():
 
 def setup_htw_pvsystem_wr5():
 
-    # Download parameters for pv
-    sam_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
-
     converter_number = 'wr5'
     inv = 'SMA_SB_3000HF_30'
     inv_data = get_sma_sb_3000hf()
-    wr5_module = 'Schott_Solar_ASE_100_ATF_34__100___1999__E__'
+    wr5_module = 'Schott a-Si 105 W'
+    module_data = get_schott_asi_105()
 
     model_wr5 = PVSystem(module=wr5_module,
                          inverter=inv,
-                         module_parameters=sam_modules[wr5_module],
+                         module_parameters=module_data,
                          inverter_parameters=inv_data,
                          surface_tilt=14.57,
                          surface_azimuth=215.,
