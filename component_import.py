@@ -92,7 +92,7 @@ def get_danfoss_dlx_2_9():
     return inverter
 
 
-def  get_aleo_s18_240():
+def get_aleo_s18_240():
     """Import Aleo S18 240 W PV-Modul"""
     sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
     aleo_s18_240 = sam_cec_mod['Aleo_Solar_S18y250'].copy()
@@ -108,7 +108,7 @@ def  get_aleo_s18_240():
     return aleo_s18_240
 
 
-def  get_aleo_s19_245():
+def get_aleo_s19_245():
     """Import Aleo S19 245 W PV-Modul"""
     sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
     aleo_s19_245 = sam_cec_mod['Aleo_Solar_S19Y270'].copy()
@@ -124,7 +124,7 @@ def  get_aleo_s19_245():
     return aleo_s19_245
 
 
-def get_schott_asi_105 ():
+def get_schott_asi_105():
     """Import Schott a-Si 105 W PV-Modul"""
     sam_sandia_mod = pvlib.pvsystem.retrieve_sam('SandiaMod')
     schott = sam_sandia_mod['Schott_Solar_ASE_100_ATF_17__100___1999__E__'].copy()

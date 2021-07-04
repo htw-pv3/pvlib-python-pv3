@@ -108,7 +108,6 @@ def setup_htw_pvlib_pvsystems(converter_number):
 
 def setup_htw_pvsystem_wr1():
 
-    converter_number = 'wr1'
     inv = 'Danfoss_Solar__DLX_2_9'
     inv_data = get_danfoss_dlx_2_9()
     wr1_module = 'Schott a-Si 105 W'
@@ -127,19 +126,19 @@ def setup_htw_pvsystem_wr1():
 
     return model_wr1
 
+
 def setup_htw_pvsystem_wr2():
 
     # Download parameters for pv
-    CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
+    cec_modules = pvlib.pvsystem.retrieve_sam('CECMod')
 
-    converter_number = 'wr2'
     inv = 'Danfoss_Solar__DLX_2_9'
     inv_data = get_danfoss_dlx_2_9()
     wr2_module = 'Aleo_Solar_S19y285'
 
     model_wr2 = PVSystem(module=wr2_module,
                          inverter=inv,
-                         module_parameters=CEC_modules[wr2_module],
+                         module_parameters=cec_modules[wr2_module],
                          inverter_parameters=inv_data,
                          surface_tilt=14.57,
                          surface_azimuth=215.,
@@ -153,7 +152,6 @@ def setup_htw_pvsystem_wr2():
 
 def setup_htw_pvsystem_wr3():
 
-    converter_number = 'wr3'
     inv = 'Danfoss_Solar__DLX_2_9'
     inv_data = get_danfoss_dlx_2_9()
     pv3_module = 'aleo_solar_s18_240'
@@ -175,7 +173,6 @@ def setup_htw_pvsystem_wr3():
 
 def setup_htw_pvsystem_wr4():
 
-    converter_number = 'wr4'
     inv = 'SMA_SB_3000HF_30'
     inv_data = get_sma_sb_3000hf()
     pv3_module = 'aleo_solar_s19_245'
@@ -197,7 +194,6 @@ def setup_htw_pvsystem_wr4():
 
 def setup_htw_pvsystem_wr5():
 
-    converter_number = 'wr5'
     inv = 'SMA_SB_3000HF_30'
     inv_data = get_sma_sb_3000hf()
     wr5_module = 'Schott a-Si 105 W'
