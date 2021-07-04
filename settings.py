@@ -91,8 +91,8 @@ def postgres_session():
     return con
 
 
-def read_from_csv(file_name):
-    df = pd.read_csv(file_name, encoding='latin1', sep=';', index_col=0, parse_dates=True)  # , skiprows=3)
+def read_from_csv(file_name, sep=';'):
+    df = pd.read_csv(file_name, encoding='latin1', sep=sep, index_col=0, parse_dates=True)  # , skiprows=3)
 
     return df
 

@@ -46,7 +46,7 @@ if __name__ == "__main__":
     # df_htw_file = read_from_csv(fn_htw)
 
     # fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
-    # df_fred_file = read_from_csv(fn_fred)
+    # df_fred_file = read_from_csv(fn_fred, sep=',')
 
     # read htw weatherdata from sonnja_db
     sql = text("""
