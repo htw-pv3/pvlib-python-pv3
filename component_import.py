@@ -108,6 +108,22 @@ def  get_aleo_s18_240():
     return aleo_s18_240
 
 
+def  get_aleo_s19_245():
+    """Import Aleo S19 245 W PV-Modul"""
+    sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
+    aleo_s19_245 = sam_cec_mod['Aleo_Solar_S19Y270'].copy()
+    aleo_s19_245['STC'] = 245.
+    aleo_s19_245['PTC'] = 220.
+    aleo_s19_245['V_mp_ref'] = 31.3
+    aleo_s19_245['V_oc_ref'] = 37.1
+    aleo_s19_245['I_mp_ref'] = 7.84
+    aleo_s19_245['I_sc_ref'] = 8.48
+    aleo_s19_245['alpha_sc'] = 0.03
+    aleo_s19_245['beta_oc'] = -0.34
+    aleo_s19_245['gamma_r'] = -0.48
+    return aleo_s19_245
+
+
 if __name__ == "__main__":
     sma = get_sma_sb_3000hf()
     print(sma)

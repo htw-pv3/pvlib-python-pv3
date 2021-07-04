@@ -22,7 +22,7 @@ from pvlib.modelchain import ModelChain
 
 from settings import HTW_LAT, HTW_LON
 
-from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s18_240
+from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s18_240, get_aleo_s19_245
 
 import logging
 log = logging.getLogger(__name__)
@@ -177,24 +177,22 @@ def setup_htw_pvsystem_wr3():
 
 def setup_htw_pvsystem_wr4():
 
-    # Download parameters for pv
-    CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
-
-    converter_number = 'wr3'
+    converter_number = 'wr4'
     inv = 'SMA_SB_3000HF_30'
     inv_data = get_sma_sb_3000hf()
-    wr4_module = 'Aleo_Solar_P18y255'
+    pv3_module = 'aleo_solar_s19_245'
+    module_data = get_aleo_s19_245()
 
-    model_wr4 = PVSystem(module=wr4_module,
+    model_wr4 = PVSystem(module=pv3_module,
                          inverter=inv,
-                         module_parameters=CEC_modules[wr4_module],
+                         module_parameters=module_data,
                          inverter_parameters=inv_data,
                          surface_tilt=14.57,
                          surface_azimuth=215.,
                          albedo=0.2,
-                         modules_per_string=14,
+                         modules_per_string=13,
                          strings_per_inverter=1,
-                         name='HTW_WR3')
+                         name='HTW_WR4')
 
     return model_wr4
 
