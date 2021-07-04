@@ -201,6 +201,30 @@ def setup_htw_pvsystem_wr4():
     return model_wr4
 
 
+def setup_htw_pvsystem_wr5():
+
+    # Download parameters for pv
+    sam_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
+
+    converter_number = 'wr5'
+    inv = 'SMA_SB_3000HF_30'
+    inv_data = get_sma_sb_3000hf()
+    wr5_module = 'Schott_Solar_ASE_100_ATF_34__100___1999__E__'
+
+    model_wr5 = PVSystem(module=wr5_module,
+                         inverter=inv,
+                         module_parameters=sam_modules[wr5_module],
+                         inverter_parameters=inv_data,
+                         surface_tilt=14.57,
+                         surface_azimuth=215.,
+                         albedo=0.2,
+                         modules_per_string=10,
+                         strings_per_inverter=3,
+                         name='HTW_WR5')
+
+    return model_wr5
+
+
 def setup_modelchain(pv_system, location):
 
     mc = ModelChain(system=pv_system, location=location,
