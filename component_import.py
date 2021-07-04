@@ -92,6 +92,49 @@ def get_danfoss_dlx_2_9():
     return inverter
 
 
+def get_aleo_s18_240():
+    """Import Aleo S18 240 W PV-Modul"""
+    sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
+    aleo_s18_240 = sam_cec_mod['Aleo_Solar_S18y250'].copy()
+    aleo_s18_240['STC'] = 240.
+    aleo_s18_240['PTC'] = 215.04
+    aleo_s18_240['V_mp_ref'] = 29.5
+    aleo_s18_240['V_oc_ref'] = 37.0
+    aleo_s18_240['I_mp_ref'] = 8.13
+    aleo_s18_240['I_sc_ref'] = 8.65
+    aleo_s18_240['alpha_sc'] = 0.04
+    aleo_s18_240['beta_oc'] = -0.34
+    aleo_s18_240['gamma_r'] = -0.46
+    return aleo_s18_240
+
+
+def get_aleo_s19_245():
+    """Import Aleo S19 245 W PV-Modul"""
+    sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
+    aleo_s19_245 = sam_cec_mod['Aleo_Solar_S19Y270'].copy()
+    aleo_s19_245['STC'] = 245.
+    aleo_s19_245['PTC'] = 220.
+    aleo_s19_245['V_mp_ref'] = 31.3
+    aleo_s19_245['V_oc_ref'] = 37.1
+    aleo_s19_245['I_mp_ref'] = 7.84
+    aleo_s19_245['I_sc_ref'] = 8.48
+    aleo_s19_245['alpha_sc'] = 0.03
+    aleo_s19_245['beta_oc'] = -0.34
+    aleo_s19_245['gamma_r'] = -0.48
+    return aleo_s19_245
+
+
+def get_schott_asi_105():
+    """Import Schott a-Si 105 W PV-Modul"""
+    sam_sandia_mod = pvlib.pvsystem.retrieve_sam('SandiaMod')
+    schott = sam_sandia_mod['Schott_Solar_ASE_100_ATF_17__100___1999__E__'].copy()
+    schott['Vmpo'] = 31.1
+    schott['Voco'] = 41.0
+    schott['Imp'] = 3.38
+    schott['Isco'] = 3.98
+    return schott
+
+
 if __name__ == "__main__":
     sma = get_sma_sb_3000hf()
     print(sma)
