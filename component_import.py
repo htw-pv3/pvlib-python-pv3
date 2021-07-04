@@ -92,6 +92,22 @@ def get_danfoss_dlx_2_9():
     return inverter
 
 
+def  get_aleo_s18_240():
+    """Import Aleo S18 240 W PV-Modul"""
+    sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
+    aleo_s18_240 = sam_cec_mod['Aleo_Solar_S18y250'].copy()
+    aleo_s18_240['STC'] = 240.
+    aleo_s18_240['PTC'] = 215.04
+    aleo_s18_240['V_mp_ref'] = 29.5
+    aleo_s18_240['V_oc_ref'] = 37.0
+    aleo_s18_240['I_mp_ref'] = 8.13
+    aleo_s18_240['I_sc_ref'] = 8.65
+    aleo_s18_240['alpha_sc'] = 0.04
+    aleo_s18_240['beta_oc'] = -0.34
+    aleo_s18_240['gamma_r'] = -0.46
+    return aleo_s18_240
+
+
 if __name__ == "__main__":
     sma = get_sma_sb_3000hf()
     print(sma)
