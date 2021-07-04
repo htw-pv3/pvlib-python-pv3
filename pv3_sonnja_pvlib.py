@@ -121,7 +121,28 @@ def setup_htw_pvsystem_wr1():
                          )
 
 
-#def setup_htw_pvsystem_wr2():
+def setup_htw_pvsystem_wr2():
+
+    # Download parameters for pv
+    CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
+
+    converter_number = 'wr2'
+    inv = 'Danfoss_Solar__DLX_2_9'
+    inv_data = get_danfoss_dlx_2_9()
+    wr2_module = 'Aleo_Solar_S19y285'
+
+    model_wr2 = PVSystem(module=wr2_module,
+                         inverter=inv,
+                         module_parameters=CEC_modules[wr2_module],
+                         inverter_parameters=inv_data,
+                         surface_tilt=14.57,
+                         surface_azimuth=215.,
+                         albedo=0.2,
+                         modules_per_string=11,
+                         strings_per_inverter=1,
+                         name='HTW_WR2')
+
+    return model_wr2
 
 
 def setup_htw_pvsystem_wr3():
