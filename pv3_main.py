@@ -20,7 +20,7 @@ from settings import setup_logger, postgres_session, read_from_csv
 from pv3_export_polysun import export_htw_polysun, export_fred_polysun
 from pv3_export_pvsol import export_htw_pvsol, export_fred_pvsol
 from pv3_sonnja_pvlib import setup_pvlib_location_object, setup_modelchain, run_modelchain, setup_htw_pvsystem_wr3, \
-    setup_htw_pvsystem_wr4, setup_htw_pvsystem_wr2
+    setup_htw_pvsystem_wr4, setup_htw_pvsystem_wr2, setup_htw_pvsystem_wr1, setup_htw_pvsystem_wr5
 
 import pandas as pd
 from sqlalchemy import *
@@ -93,22 +93,28 @@ if __name__ == "__main__":
     htw_location = setup_pvlib_location_object()
 
     # pv system
+    wr1 = setup_htw_pvsystem_wr1()
     wr2 = setup_htw_pvsystem_wr2()
     wr3 = setup_htw_pvsystem_wr3()
     print(wr3)
     wr4 = setup_htw_pvsystem_wr4()
+    wr5 = setup_htw_pvsystem_wr5()
     # weather data
     df_fred_pvlib = df_fred.resample('H').mean()
 
     # model chains
+    mc1 = setup_modelchain(wr1, htw_location)
     mc2 = setup_modelchain(wr2, htw_location)
     mc3 = setup_modelchain(wr3, htw_location)
     mc4 = setup_modelchain(wr4, htw_location)
+    mc5 = setup_modelchain(wr5, htw_location)
 
+    run_modelchain(mc1, df_fred_pvlib)
     run_modelchain(mc2, df_fred_pvlib)
     run_modelchain(mc3, df_fred_pvlib)
     #run_modelchain(mc3, df_htw) # Add DHI
     run_modelchain(mc4, df_fred_pvlib)
+    run_modelchain(mc5, df_fred_pvlib)
 
     print(mc3.aoi)
     print(mc3.dc)
