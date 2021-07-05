@@ -124,6 +124,22 @@ def get_aleo_s19_245():
     return aleo_s19_245
 
 
+    # adding data for aleo_s19_285, even though the module is in the CEC-Database
+def get_aleo_s19_285():
+    """Import Aleo S19 285 W PV-Modul"""
+    sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
+    aleo_s19_285 = sam_cec_mod['Aleo_Solar_S19Y285'].copy()
+    aleo_s19_285['STC'] = 285.
+    aleo_s19_285['PTC'] = 261.25
+    aleo_s19_285['V_mp_ref'] = 31.3
+    aleo_s19_285['V_oc_ref'] = 39.2
+    aleo_s19_285['I_mp_ref'] = 9.10
+    aleo_s19_285['I_sc_ref'] = 9.73
+    aleo_s19_285['alpha_sc'] = 0.05
+    aleo_s19_285['beta_oc'] = -0.30
+    aleo_s19_285['gamma_r'] = -0.43
+    return aleo_s19_285
+
 def get_schott_asi_105():
     """Import Schott a-Si 105 W PV-Modul"""
     sam_sandia_mod = pvlib.pvsystem.retrieve_sam('SandiaMod')
