@@ -151,6 +151,7 @@ if __name__ == "__main__":
     # print(mc3.ac)
 
     # yield
+    log.info(f'OpenFRED Weather Data')
     res_wr1_ac = mc1.ac
     res_wr1_ac_sum = res_wr1_ac.sum()/1000
     log.info(f'Annual yield WR1: {res_wr1_ac_sum}')
@@ -164,6 +165,26 @@ if __name__ == "__main__":
     res_wr4_ac_sum = res_wr4_ac.sum() / 1000
     log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
     res_wr5_ac = mc5.ac
+    res_wr5_ac_sum = res_wr5_ac.sum() / 1000
+    log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
+
+    res_sum = res_wr1_ac_sum + res_wr2_ac_sum + res_wr3_ac_sum + res_wr4_ac_sum + res_wr5_ac_sum
+    log.info(f'Annual yield SonnJA: {res_sum}')
+
+    log.info(f'HTW Weather Data')
+    res_wr1_ac = mc1_htw.ac
+    res_wr1_ac_sum = res_wr1_ac.sum()/1000
+    log.info(f'Annual yield WR1: {res_wr1_ac_sum}')
+    res_wr2_ac = mc2_htw.ac
+    res_wr2_ac_sum = res_wr2_ac.sum() / 1000
+    log.info(f'Annual yield WR2: {res_wr2_ac_sum}')
+    res_wr3_ac = mc3_htw.ac
+    res_wr3_ac_sum = res_wr3_ac.sum() / 1000
+    log.info(f'Annual yield WR3: {res_wr3_ac_sum}')
+    res_wr4_ac = mc4_htw.ac
+    res_wr4_ac_sum = res_wr4_ac.sum() / 1000
+    log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
+    res_wr5_ac = mc5_htw.ac
     res_wr5_ac_sum = res_wr5_ac.sum() / 1000
     log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
 
