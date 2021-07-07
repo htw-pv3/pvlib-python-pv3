@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-Service functions for logging and database connection
+HTW-PV3 - Config file functions (not used atm)
 
-Configure console and file logging;
-Create and handle config file for database connection;
+Create and handle a config file for database connection
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 """
@@ -14,52 +13,14 @@ __copyright__ = "© Ludwig Hülk"
 __license__ = "GNU Affero General Public License Version 3 (AGPL-3.0)"
 __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
-__version__ = "v0.0.1"
+__version__ = "v0.0.2"
 
 import os
-import sys
-import getpass
-from sqlalchemy import *
 import configparser as cp
-import logging
-log = logging.getLogger(__name__)
 
 """parameter"""
 cfg = cp.RawConfigParser()
 config_file = 'config.ini'
-log_file = 'pv3.log'
-
-
-def setup_logger():
-    """Configure logging in console and log file.
-
-    Returns
-    -------
-    rl : logger
-        Logging in console (ch) and file (fh).
-    """
-
-    rl = logging.getLogger()
-    rl.setLevel(logging.INFO)
-    rl.propagate = False
-
-    # set format
-    formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s',
-                                  datefmt='%Y-%m-%d %H:%M:%S')
-
-    # console handler (ch)
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.INFO)
-    ch.setFormatter(formatter)
-
-    # file handler (fh)
-    fh = logging.FileHandler(log_file)
-    fh.setLevel(logging.INFO)
-    fh.setFormatter(formatter)
-
-    rl.handlers = [ch, fh]
-
-    return rl
 
 
 def config_section_set(config_section, host, port, user, pw):
@@ -165,7 +126,7 @@ def setup_config():
 
     # token
     try:
-        from config import config_file_get
+        from settings import config_file_get
         token = config_file_get(config_section, 'token')
     except:
         import sys
@@ -175,25 +136,3 @@ def setup_config():
         config_section_set(config_section, value=user, key=token)
         print('Config file created.')
     return user, token
-
-
-def postgres_session():
-    """SQLAlchemy session object with valid connection to local database"""
-
-    print('Please provide connection parameters to database:')
-    host = 'localhost'  # input('host (default 130.226.55.43): ')
-    port = '5434'  # input('port (default 5432): ')
-    database = 'sonnja_db'  # input("database name (default 'reeem'): ")
-    user = 'sonnja'  # input('user (default postgres): ')
-    password = input('password: ')
-    #password = getpass.getpass(prompt='password: ',
-    #                           stream=sys.stderr)
-
-    con = create_engine(
-        'postgresql://' + '%s:%s@%s:%s/%s' % (user,
-                                              password,
-                                              host,
-                                              port,
-                                              database)).connect()
-    print('Password correct! Database connection established.')
-    return con

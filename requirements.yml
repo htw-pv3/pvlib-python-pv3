@@ -1,11 +1,14 @@
-name: d_py37_pv
+name: d_py38_pv3
 dependencies:
-    - python=3.7
+    - python=3.8
+    - jupyter
+    - matplotlib
     - pandas
-    - scipy
-    - numpy
+    - plotly
     - sqlalchemy
+    - seaborn
+    - xlrd
+    - openpyxl
     - psycopg2
-    - pip
     - pip:
         - pvlib
