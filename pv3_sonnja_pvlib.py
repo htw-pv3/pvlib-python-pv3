@@ -22,6 +22,8 @@ from pvlib.modelchain import ModelChain
 
 from settings import HTW_LAT, HTW_LON
 
+from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s18_240, get_aleo_s19_245, get_aleo_s19_285, get_schott_asi_105
+
 import logging
 log = logging.getLogger(__name__)
 
@@ -37,8 +39,6 @@ def setup_pvlib_location_object():
     """
     return Location(latitude=HTW_LAT, longitude=HTW_LON,
                     tz='Europe/Berlin', altitude=80, name='HTW Berlin')
-
-
 
 
 def setup_htw_pvlib_pvsystems(converter_number):
@@ -139,36 +139,59 @@ def setup_htw_pvlib_pvsystems(converter_number):
 
 def setup_htw_pvsystem_wr1():
 
-    # Download parameters for pv and inverters
-    sam_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
-    CEC_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
+    inv = 'Danfoss_Solar__DLX_2_9'
+    inv_data = get_danfoss_dlx_2_9()
+    wr1_module = 'Schott a-Si 105 W'
+    module_data = get_schott_asi_105()
 
-    converter_number = 'wr1'
-    inv_danfoss = 'Danfoss_Solar__DLX_2_9_UL__240V__240V__CEC_2013_'
-    pv1_module = 'Schott_Solar_ASE_100_ATF_34__100___1999__E__'
+    model_wr1 = PVSystem(module=wr1_module,
+                         inverter=inv,
+                         module_parameters=module_data,
+                         inverter_parameters=inv_data,
+                         surface_tilt=14.57,
+                         surface_azimuth=215.,
+                         albedo=0.2,
+                         modules_per_string=10,
+                         strings_per_inverter=3,
+                         name='HTW_WR1')
 
-    model_wr1 = PVSystem(module=pv1_module,
-                         inverter=inv_danfoss,
-                         )
+    return model_wr1
 
 
-#def setup_htw_pvsystem_wr2():
+def setup_htw_pvsystem_wr2():
+
+    # Download parameters for pv
+    cec_modules = pvlib.pvsystem.retrieve_sam('CECMod')
+
+    inv = 'Danfoss_Solar__DLX_2_9'
+    inv_data = get_danfoss_dlx_2_9()
+    wr2_module = 'Aleo_Solar_S19y285'
+
+    model_wr2 = PVSystem(module=wr2_module,
+                         inverter=inv,
+                         module_parameters=cec_modules[wr2_module],
+                         inverter_parameters=inv_data,
+                         surface_tilt=14.57,
+                         surface_azimuth=215.,
+                         albedo=0.2,
+                         modules_per_string=11,
+                         strings_per_inverter=1,
+                         name='HTW_WR2')
+
+    return model_wr2
+
 
 def setup_htw_pvsystem_wr3():
 
-    # Download parameters for pv and inverters
-    CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
-    CEC_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
-    sam_adr_inv = pvlib.pvsystem.retrieve_sam('ADRInverter')
-
-    converter_number = 'wr3'
-    inv_danfoss = 'Danfoss_Solar__DLX_2_9_UL__240V__240V__CEC_2013_'
-    pv3_module = 'Aleo_Solar_P18y255'
+    inv = 'Danfoss_Solar__DLX_2_9'
+    inv_data = get_danfoss_dlx_2_9()
+    pv3_module = 'aleo_solar_s18_240'
+    module_data = get_aleo_s18_240()
 
     model_wr3 = PVSystem(module=pv3_module,
-                         inverter=inv_danfoss,
-                         module_parameters=CEC_modules[pv3_module],
-                         inverter_parameters=sam_adr_inv[inv_danfoss],
+                         inverter=inv,
+                         module_parameters=module_data,
+                         inverter_parameters=inv_data,
                          surface_tilt=14.57,
                          surface_azimuth=215.,
                          albedo=0.2,
@@ -178,6 +201,47 @@ def setup_htw_pvsystem_wr3():
 
     return model_wr3
 
+
+def setup_htw_pvsystem_wr4():
+
+    inv = 'SMA_SB_3000HF_30'
+    inv_data = get_sma_sb_3000hf()
+    pv3_module = 'aleo_solar_s19_245'
+    module_data = get_aleo_s19_245()
+
+    model_wr4 = PVSystem(module=pv3_module,
+                         inverter=inv,
+                         module_parameters=module_data,
+                         inverter_parameters=inv_data,
+                         surface_tilt=14.57,
+                         surface_azimuth=215.,
+                         albedo=0.2,
+                         modules_per_string=13,
+                         strings_per_inverter=1,
+                         name='HTW_WR4')
+
+    return model_wr4
+
+
+def setup_htw_pvsystem_wr5():
+
+    inv = 'SMA_SB_3000HF_30'
+    inv_data = get_sma_sb_3000hf()
+    wr5_module = 'Schott a-Si 105 W'
+    module_data = get_schott_asi_105()
+
+    model_wr5 = PVSystem(module=wr5_module,
+                         inverter=inv,
+                         module_parameters=module_data,
+                         inverter_parameters=inv_data,
+                         surface_tilt=14.57,
+                         surface_azimuth=215.,
+                         albedo=0.2,
+                         modules_per_string=10,
+                         strings_per_inverter=3,
+                         name='HTW_WR5')
+
+    return model_wr5
 
 
 def setup_modelchain(pv_system, location):
