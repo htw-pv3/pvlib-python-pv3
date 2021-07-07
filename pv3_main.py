@@ -126,6 +126,11 @@ if __name__ == "__main__":
     mc3 = setup_modelchain(wr3, htw_location)
     mc4 = setup_modelchain(wr4, htw_location)
     mc5 = setup_modelchain(wr5, htw_location)
+    mc1_htw = setup_modelchain(wr1, htw_location)
+    mc2_htw = setup_modelchain(wr2, htw_location)
+    mc3_htw = setup_modelchain(wr3, htw_location)
+    mc4_htw = setup_modelchain(wr4, htw_location)
+    mc5_htw = setup_modelchain(wr5, htw_location)
 
     # run modelchain
     run_modelchain(mc1, df_fred_pvlib)
@@ -133,6 +138,11 @@ if __name__ == "__main__":
     run_modelchain(mc3, df_fred_pvlib)
     run_modelchain(mc4, df_fred_pvlib)
     run_modelchain(mc5, df_fred_pvlib)
+    run_modelchain(mc1_htw, df_htw_pvlib)
+    run_modelchain(mc2_htw, df_htw_pvlib)
+    run_modelchain(mc3_htw, df_htw_pvlib)
+    run_modelchain(mc4_htw, df_htw_pvlib)
+    run_modelchain(mc5_htw, df_htw_pvlib)
 
     # export results
 
