@@ -21,4 +21,9 @@ Run SQL scripts to create and fill database with weather data: https://github.co
 Note: The data used is not provided due to licensing issues. <br>
 Please contact @Ludee for further information.
 
+## Research object
 
+The test object is the PV system SonnJA!, which was planned by students of the HTW Berlin and the organization einleuchtend e.V..
+It was planned in between 2010 and 2013 and is placed on about 620 m^2 of the roof area of the building G of the Wilheminenhof campus. 
+The produced electricity of this 16 kWp power plant is fed into one phase of the university internal grid of HTW Berlin and remunerated according to the EEG. 
+The special quality of this PV system is its conception as a research system: the system has three different module technologies, two types of inverters and a comprehensive monitoring system with its own weather station. 
