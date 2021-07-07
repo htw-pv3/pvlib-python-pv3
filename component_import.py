@@ -96,6 +96,8 @@ def get_aleo_s18_240():
     """Import Aleo S18 240 W PV-Modul"""
     sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
     aleo_s18_240 = sam_cec_mod['Aleo_Solar_S18y250'].copy()
+    # Module not available in the database. The data of a very similar module (250 W instead of 240 W) was copied
+    # and the available data from the data sheet was inserted
     aleo_s18_240['STC'] = 240.
     aleo_s18_240['PTC'] = 215.04
     aleo_s18_240['V_mp_ref'] = 29.5
@@ -112,6 +114,8 @@ def get_aleo_s19_245():
     """Import Aleo S19 245 W PV-Modul"""
     sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
     aleo_s19_245 = sam_cec_mod['Aleo_Solar_S19Y270'].copy()
+    # Module not available in the database. The data of a similar module (270 W instead of 245 W) was copied
+    # and the available data from the data sheet was inserted
     aleo_s19_245['STC'] = 245.
     aleo_s19_245['PTC'] = 220.
     aleo_s19_245['V_mp_ref'] = 31.3
