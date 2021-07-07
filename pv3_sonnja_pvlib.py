@@ -22,7 +22,7 @@ from pvlib.modelchain import ModelChain
 
 from settings import HTW_LAT, HTW_LON
 
-from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s18_240, get_aleo_s19_245, get_schott_asi_105
+from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s18_240, get_aleo_s19_245, get_aleo_s19_285, get_schott_asi_105
 
 import logging
 log = logging.getLogger(__name__)
