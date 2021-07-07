@@ -16,11 +16,12 @@ __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
 __version__ = "v0.0.2"
 
-from settings import setup_logger, postgres_session, read_from_csv
+from settings import setup_logger, postgres_session, read_from_csv, HTW_LON, HTW_LAT
 from pv3_export_polysun import export_htw_polysun, export_fred_polysun
 from pv3_export_pvsol import export_htw_pvsol, export_fred_pvsol
 from pv3_sonnja_pvlib import setup_pvlib_location_object, setup_modelchain, run_modelchain, setup_htw_pvsystem_wr3, \
     setup_htw_pvsystem_wr4, setup_htw_pvsystem_wr2, setup_htw_pvsystem_wr1, setup_htw_pvsystem_wr5
+from pv3_weatherdata import calculate_diffuse_irradiation
 
 import pandas as pd
 from sqlalchemy import *
@@ -55,6 +56,12 @@ if __name__ == "__main__":
         """)
     df_htw = pd.read_sql_query(sql, con)
     df_htw = df_htw.set_index('timestamp')
+    htw_weatherdata_names = {"G_hor_Si": "ghi",
+                             'v_wind': "wind_speed",
+                             't_luft': "temp_air",
+                             }
+    df_htw = df_htw.rename(columns=htw_weatherdata_names)
+    df_dhi = calculate_diffuse_irradiation(df_htw, "ghi", HTW_LAT, HTW_LON)
 
     # read open_FRED weatherdata from sonnja_db
     sql = text("""
@@ -109,6 +116,7 @@ if __name__ == "__main__":
 
     # weather data
     df_fred_pvlib = df_fred.resample('H').mean()
+    df_htw_pvlib = df_fred.resample('H').mean()
 
     # model chain
     mc1 = setup_modelchain(wr1, htw_location)
