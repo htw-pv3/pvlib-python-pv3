@@ -79,8 +79,8 @@ if __name__ == "__main__":
     # export_htw_pvsol(df_db_htw_weather_1h, file_name_pvsol_1h)
     #
     # # Export FRED for POLYSUN
-    fn_fred_polysun = 'pv3_fred_polysun_1h_2015.csv'
-    export_fred_polysun(df_fred, fn_fred_polysun, 'H')
+    # fn_fred_polysun = 'pv3_fred_polysun_1h_2015.csv'
+    # export_fred_polysun(df_fred, fn_fred_polysun, 'H')
     #
     # # Export FRED for PVSOL
     # fn_fred_pvsol = 'pv3_fred_pvsol_1h_2015.dat'
