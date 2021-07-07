@@ -106,25 +106,31 @@ def export_fred_polysun(df, filename, resolution):
 
 
     df['h_luft'] = 0
+    # rename columns
+    column_names = {'ghi': 'Gh [W/m²]',  # Gh Globalstrahlung [Wh/m2]
+                    'dhi': 'Dh [W/m²]',  # Dh Diffusstrahlung [Wh/m2]
+                    'temp_air': 'Tamb [°C]',  # Tamb Umgebungstemperatur [°C]
+                    'wind_speed': 'Vwnd [m/s]',  # Vwnd Windgeschwindigkeit [m/s]
+                    'h_luft': 'Hrel [%]',  # Hrel Luftfeuchtigkeit [%]
+                   }
 
-    column_names = {"ghi": "g_hor_si",
-                     "wind_speed": 'v_wind',
-                     "temp_air": 't_luft',
-                     }
 
     df_open_fred = df.rename(columns=column_names)
+    df_open_fred['Lh [W/m²]'] = 0  # Lh Langwellenstrahlung[Wh / m2]
 
     fred_lat = df_open_fred['lat'][0]
     fred_lon = df_open_fred['lon'][0]
 
     time = list(zip(range(steps), [s * i for i in range(steps)]))
-    polysun = {}
     polysun = {'# Time [s]': dict(time)}
 
     polysun.update(
         df_open_fred.loc[:,
-        ['g_hor_si', 't_luft', 'v_wind', 'h_luft']].reset_index(
+        [ 'Gh [W/m²]', 'Dh [W/m²]', 'Tamb [°C]',
+         'Lh [W/m²]', 'Vwnd [m/s]', 'Hrel [%]']]
+            .reset_index(
             drop=True).to_dict())
+
 
     df_polysun = pd.DataFrame.from_dict(polysun)
 
