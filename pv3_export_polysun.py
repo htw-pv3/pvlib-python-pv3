@@ -53,6 +53,7 @@ def export_htw_polysun(df_weather, filename, resolution, parameter_name):
 
     # zero values as not needed
     df_polysun['Lh [W/m²]'] = 0                 # Lh Langwellenstrahlung[Wh / m2]
+    # Longwave radiation is not present in the Openfred weather data but the column is needed for the polysun import.
 
     # rename columns
     PRINT_NAMES = {'g_hor_si': 'Gh [W/m²]',     # Gh Globalstrahlung [Wh/m2]
@@ -62,6 +63,7 @@ def export_htw_polysun(df_weather, filename, resolution, parameter_name):
                    'h_luft': 'Hrel [%]',        # Hrel Luftfeuchtigkeit [%]
                    }
     df_polysun = df_polysun.rename(columns=PRINT_NAMES)
+    # The columns are renamed according to the polysun requirements
 
     df_polysun = df_polysun.loc[:,
                  ['# Time [s]', 'Gh [W/m²]', 'Dh [W/m²]', 'Tamb [°C]',
@@ -72,7 +74,7 @@ def export_htw_polysun(df_weather, filename, resolution, parameter_name):
     write_to_csv(f'./data/{filename}', df_polysun, append=False,
                  index=False)
 
-    ## 1. Todo Doku
+    # Adaptation of the header of the weather data CSV according to the polysun requirements
     polysun_first_row = '# Station: HTW Berlin, PVlib\n'
     ## 2. Todo Doku
     polysun_second_row = f'# Latitude: {HTW_LAT:.4f} Longitude: {HTW_LON:.4f} altitude: 81m\n'
@@ -92,7 +94,7 @@ def export_fred_polysun(df, filename, resolution):
 
     # dhi doesnt have to be calculated as it is already integrated
 
-    # resample
+    # resample to minute values and hourly values
     if resolution == 'M':
         s = 60
         steps = 525600
