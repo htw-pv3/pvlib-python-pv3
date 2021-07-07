@@ -56,12 +56,15 @@ if __name__ == "__main__":
         """)
     df_htw = pd.read_sql_query(sql, con)
     df_htw = df_htw.set_index('timestamp')
-    htw_weatherdata_names = {"G_hor_Si": "ghi",
+    htw_weatherdata_names = {"g_hor_si": "ghi",
                              'v_wind': "wind_speed",
                              't_luft': "temp_air",
                              }
     df_htw = df_htw.rename(columns=htw_weatherdata_names)
     df_dhi = calculate_diffuse_irradiation(df_htw, "ghi", HTW_LAT, HTW_LON)
+    df_htw = df_htw.merge(df_dhi[['dhi', 'dni']], left_index=True, right_index=True)
+    df_htw_select = df_htw.loc[:, ["ghi", "dhi", 'dni', "wind_speed", "temp_air"]]
+    df_htw_pvlib = df_htw_select.resample('H').mean()
 
     # read open_FRED weatherdata from sonnja_db
     sql = text("""
@@ -116,7 +119,6 @@ if __name__ == "__main__":
 
     # weather data
     df_fred_pvlib = df_fred.resample('H').mean()
-    df_htw_pvlib = df_fred.resample('H').mean()
 
     # model chain
     mc1 = setup_modelchain(wr1, htw_location)
