@@ -21,4 +21,9 @@ Run SQL scripts to create and fill database with weather data: https://github.co
 Note: The data used is not provided due to licensing issues. <br>
 Please contact @Ludee for further information.
 
+### Database of pvlib
+
+To find solar modules or inverter in the database of pvlib open pv3_pvlib_sam_data.ipynb in jupyter notebook.
+In this file you will find an examples of the existing database's and which components are included. Furthermore the electrical specification
+
 
