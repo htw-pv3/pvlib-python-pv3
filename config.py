@@ -22,7 +22,7 @@ import configparser as cp
 cfg = cp.RawConfigParser()
 config_file = 'config.ini'
 
-
+# Datenbankzugriffe, Host, Port, User, Passwort, ...
 def config_section_set(config_section, host, port, user, pw):
     """Create a config file.
 
@@ -51,7 +51,7 @@ def config_section_set(config_section, host, port, user, pw):
             cfg.set(config_section, 'pw', pw)
             cfg.write(config)
 
-
+# Einlesen der Datenbankzugriffe
 def config_file_load():
     """Load the username and pw from config file."""
 
@@ -60,7 +60,7 @@ def config_file_load():
     else:
         config_file_not_found_message()
 
-
+# Initialisieren und checken der Datenbankzugriffe
 def config_file_init():
     """Read config file."""
 
@@ -72,7 +72,7 @@ def config_file_init():
     except FileNotFoundError:
         config_file_not_found_message()
 
-
+# Setting auslesen
 def config_file_get(config_section, port):
     """Read data from config file.
 
@@ -97,13 +97,13 @@ def config_file_get(config_section, port):
             except:
                 return cfg.get(config_section, port)
 
-
+# Ausagebemessage, wenn file nicht gefunden wurde
 def config_file_not_found_message():
     """Show error message if file not found."""
 
     print(f'The config file "{config_file}" could not be found')
 
-
+# Erstellen der Postgres-Session(gleiche Funktion, wie bei Juypter Notebook)
 def setup_config():
     """Access config.ini.
 
