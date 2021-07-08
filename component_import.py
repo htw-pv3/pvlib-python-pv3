@@ -142,12 +142,20 @@ def get_aleo_s19_285():
 
 def get_schott_asi_105():
     """Import Schott a-Si 105 W PV-Modul"""
-    sam_sandia_mod = pvlib.pvsystem.retrieve_sam('SandiaMod')
-    schott = sam_sandia_mod['Schott_Solar_ASE_100_ATF_17__100___1999__E__'].copy()
-    schott['Vmpo'] = 31.1
-    schott['Voco'] = 41.0
-    schott['Imp'] = 3.38
-    schott['Isco'] = 3.98
+    sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
+    schott = sam_cec_mod['Bosch_Solar_Thin_Film_um_Si_plus_105'].copy()
+    schott['I_sc_ref'] = 3.98
+    schott['V_oc_ref'] = 41.0
+    schott['I_mp_ref'] = 3.38
+    schott['V_mp_ref'] = 31.1
+    schott['STC'] = 105
+    schott['PTC'] = 95
+    schott['alpha_sc'] = 0.08
+    schott['beta_oc'] = -0.33
+    schott['gamma_r'] = -0.2
+    schott['Length'] = 1.308
+    schott['Width'] = 1.108
+    schott['T_NOCT'] = 49
     return schott
 
 

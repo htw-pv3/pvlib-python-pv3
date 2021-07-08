@@ -13,9 +13,7 @@ This repository is licensed under [BSD 3-Clause License (BSD-3-Clause)](https://
 `conda env create -f requirements.yml` <br>
 `activate d_py38_pv3`
 
-### required packages for this REPO
 
-csv, colorlover, getpass, glob, IPython.display, json, matplotlib, plotly, pylab, os, pandas, scipy, scipy.interpolate,seaborn, sqalchemy, sys
 
 ### Setup folder and data
 
@@ -25,7 +23,7 @@ Run SQL scripts to create and fill database with weather data: https://github.co
 Note: The data used is not provided due to licensing issues. <br>
 Please contact @Ludee for further information.
 
-## Research object
+
 
 The test object is the PV system SonnJA!, which was planned by students of the HTW Berlin and the organization einleuchtend e.V..
 It was planned in between 2010 and 2013 and is placed on about 620 m^2 of the roof area of the building G of the Wilheminenhof campus. 
