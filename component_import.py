@@ -107,7 +107,7 @@ def get_aleo_s18_240():
     aleo_s18_240['gamma_r'] = -0.46
     return aleo_s18_240
 
-
+    # adding the specific Modul parameters for aleo_s19_245
 def get_aleo_s19_245():
     """Import Aleo S19 245 W PV-Modul"""
     sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
