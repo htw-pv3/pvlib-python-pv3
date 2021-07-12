@@ -27,24 +27,23 @@ from sqlalchemy import *
 
 import time
 
-
 DATA_VERSION = 'htw_pv3_v0.0.1'
 
 if __name__ == "__main__":
-
     """logging"""
     log = setup_logger()
     start_time = time.time()
     log.info(f'PV3 model started with data version: {DATA_VERSION}')
 
-    """database"""
-    con = postgres_session()
+    # """database"""
+    # con = postgres_session()
 
     """Read data"""
     # read htw weatherdata from file
-    fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
-    df_htw = read_from_csv(fn_htw)
 
+    df_htw = read_from_csv(file_name="pv3_weather_2015_filled_mview.csv")
+
+    #
     fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
     df_fred = pd.read_csv(fn_fred, encoding='latin1', sep=',', index_col=0, parse_dates=True)
 

@@ -5,12 +5,11 @@
 PDX-License-Identifier: AGPL-3.0-or-later
 """
 
-
 import json
-import pandas as pd
-import pvlib as pvl
-import re
 import os
+import re
+
+import pvlib as pvl
 
 from settings import setup_logger
 
@@ -78,4 +77,4 @@ def search_dbs(path):
 
         with open(output_dir + '/db_results.json', 'w') as fp:
             json.dump(results, fp, sort_keys=True, indent=4)
-        log.info('Saved results to %s'%output_dir)
+        log.info('Saved results to %s' % output_dir)
