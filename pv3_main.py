@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+# the operation  "." enables shortening folders path and means: stay in the current folder
 """
 HTW-PV3 - Main file
 
