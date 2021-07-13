@@ -59,12 +59,12 @@ In this file you will find an examples of the existing database's and which comp
 ### Setup PV-Model
 
 Steps to simulate a pv-model with pvlib:
-- Define location of the object with Latitude, Longitude, timezone, altitude, name
-- Load module and inverter specification with `pvlib.pvsystem.retrieve_sam`funktion from Sandia or CEC Database
-- If module or inverter are not available in Database, the parameters can be changed with the funktion `module.copy()`     
+- Define location of the object with latitude, longitude, timezone, altitude, name
+- Load module and inverter specification with `pvlib.pvsystem.retrieve_sam`function from Sandia or CEC Database
+- If module or inverter are not available in Database, the parameters can be changed with the function `module.copy()`     
 - Setup PVsystem with: module technologies, inverters types, surface_tilt, surface_azimuth, albedo, modules_per_string, strings_per_inverter
 - Build and setup a ModelChain composed of location and PVsystem
-- Run a basic model with `run_modelchain(mc, weather_data)` -> Funktion return output mc.ac and mc.dc Power in watts
+- Run a basic model with `run_modelchain(mc, weather_data)` -> function returns output mc.ac and mc.dc Power in watts
 
-more infos and funktions here: https://pvlib-python.readthedocs.io/en/stable/index.html
+more infos and functions here: https://pvlib-python.readthedocs.io/en/stable/index.html
 
