@@ -66,7 +66,7 @@ if __name__ == "__main__":
     df_htw = df_htw.merge(df_dhi[['dhi', 'dni']], left_index=True, right_index=True)
     df_htw_select = df_htw.loc[:, ["ghi", "dhi", 'dni', "wind_speed", "temp_air"]]
     df_htw_pvlib = df_htw_select.resample('H').mean()
-
+    # Wetterdaten der HTW Berlin im Einsatz
     # read open_FRED weatherdata from sonnja_db
     sql = text("""
         SELECT  *                                  -- column
