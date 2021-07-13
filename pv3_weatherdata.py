@@ -22,6 +22,7 @@ from datetime import timedelta
 import pvlib
 
 
+
 def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
     """
 
@@ -29,6 +30,7 @@ def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
     -------
 
     """
+    # calculate dhi and dni for htw weatherdata
     df_solarpos = pvlib.solarposition.spa_python(df.index, lat, lon)
 
     df_irradiance = pvlib.irradiance.erbs(ghi=df.loc[:, parameter_name],
