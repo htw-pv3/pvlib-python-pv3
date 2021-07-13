@@ -465,7 +465,7 @@ def calculate_dni_pvlib(weather_df, corrected=True):
     dni.set_index('time', inplace=True)
 
     return df
-
+v
 
 def setup_and_run_modelchain(pv_system, location, weather_data):
 
