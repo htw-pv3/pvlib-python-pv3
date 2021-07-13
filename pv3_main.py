@@ -153,6 +153,7 @@ if __name__ == "__main__":
     # print(mc3.ac)
 
     # yield
+    # the sum of the  AC output power of the inverter
     log.info(f'OpenFRED Weather Data')
     res_wr1_ac = mc1.ac
     res_wr1_ac_sum = res_wr1_ac.sum()/1000
