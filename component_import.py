@@ -106,6 +106,9 @@ def get_aleo_s18_240():
     aleo_s18_240['beta_oc'] = -0.34
     aleo_s18_240['gamma_r'] = -0.46
     return aleo_s18_240
+    # The PTC value was calculated by dividing the STC of the created module
+    # by the STC of the reference module and multiplying it by the PTC of the reference module.
+    # All other values were taken from the data sheet.
 
     # adding the specific Modul parameters for aleo_s19_245
 def get_aleo_s19_245():
@@ -122,7 +125,9 @@ def get_aleo_s19_245():
     aleo_s19_245['beta_oc'] = -0.34
     aleo_s19_245['gamma_r'] = -0.48
     return aleo_s19_245
-
+    # The PTC value was calculated by dividing the STC of the created module
+    # by the STC of the reference module and multiplying it by the PTC of the reference module.
+    # All other values were taken from the data sheet.
 
     # adding data for aleo_s19_285, even though the module is in the CEC-Database
 def get_aleo_s19_285():
@@ -139,6 +144,9 @@ def get_aleo_s19_285():
     aleo_s19_285['beta_oc'] = -0.30
     aleo_s19_285['gamma_r'] = -0.43
     return aleo_s19_285
+    # The PTC value was calculated by dividing the STC of the created module
+    # by the STC of the reference module and multiplying it by the PTC of the reference module.
+    # All other values were taken from the data sheet.
 
 def get_schott_asi_105():
     """Import Schott a-Si 105 W PV-Modul"""
@@ -157,7 +165,9 @@ def get_schott_asi_105():
     schott['Width'] = 1.108
     schott['T_NOCT'] = 49
     return schott
-
+    # The PTC value was calculated by dividing the STC of the created module
+    # by the STC of the reference module and multiplying it by the PTC of the reference module.
+    # All other values were taken from the data sheet.
 
 if __name__ == "__main__":
     sma = get_sma_sb_3000hf()

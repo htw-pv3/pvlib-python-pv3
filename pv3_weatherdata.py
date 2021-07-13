@@ -15,11 +15,19 @@ __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
 __version__ = "v0.0.2"
 
+import datetime
+
 import pandas as pd
 import os
 from datetime import timedelta
-
+from collections import OrderedDict
 import pvlib
+from pvlib import tools
+import numpy as np
+
+
+from pvlib.irradiance import clearness_index, get_extra_radiation
+
 
 
 def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
@@ -29,6 +37,7 @@ def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
     -------
 
     """
+    # calculate dhi and dni for htw weatherdata
     df_solarpos = pvlib.solarposition.spa_python(df.index, lat, lon)
 
     df_irradiance = pvlib.irradiance.erbs(ghi=df.loc[:, parameter_name],
@@ -98,6 +107,7 @@ def setup_weather_dataframe(weather_data):
     data = pd.read_csv(
         os.path.join(file_directory, 'htw_wetter_weatherdata_2015.csv'),
         sep=';', header=[0], index_col=[0], parse_dates=True)
+
     # select and rename columns
     columns = {'G_hor_CMP6': 'ghi',
                'G_gen_CMP11': 'gni',
@@ -114,3 +124,41 @@ def setup_weather_dataframe(weather_data):
     data = data.tz_localize('Etc/GMT-1') # GMT+1??
     data = data.tz_convert('Europe/Berlin')
     return data
+
+
+#def erbs (ghi, zenith,datetime_or_doy, min_cos_zenith=0.065, max_zenith=87):
+    #dni_extra = get_extra_radiation(datetime_or_doy)
+
+    #kt = clearness_index(ghi, zenith, dni_extra, min_cos_zenith=min_cos_zenith,
+    #                     max_clearness_index=1)
+
+    # For Kt <= 0.22, set the diffuse fraction
+    #df = 1 - 0.09*kt
+
+    # For Kt > 0.22 and Kt <= 0.8, set the diffuse fraction
+    #df = np.where((kt > 0.22) & (kt <= 0.8),
+    #              0.9511 - 0.1604*kt + 4.388*kt**2 -
+    #              16.638*kt**3 + 12.336*kt**4,
+    #              df)
+
+    # For Kt > 0.8, set the diffuse fraction
+    #df = np.where(kt > 0.8, 0.165, df)
+
+    #dhi = df * ghi
+
+    #dni = (ghi - dhi) / tools.cosd(zenith)
+    #bad_values = (zenith > max_zenith) | (ghi < 0) | (dni < 0)
+    #dni = np.where(bad_values, 0, dni)
+    # ensure that closure relationship remains valid
+    #dhi = np.where(bad_values, ghi, dhi)
+
+    #data = OrderedDict()
+    #data['dni'] = dni
+    #data['dhi'] = dhi
+    #data['kt'] = kt
+
+    #if isinstance(datetime_or_doy, pd.DatetimeIndex):
+     #   data = pd.DataFrame(data, index=datetime_or_doy)
+
+    #return data
+

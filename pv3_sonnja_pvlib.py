@@ -76,9 +76,9 @@ def setup_htw_pvlib_pvsystems(converter_number):
                              albedo=0.2,
                              modules_per_string=10, strings_per_inverter=3,
                              name='HTW_module_1')
-        pv_module.module_parameters['EgRef'] = 1.121
-        pv_module.module_parameters['dEgdT'] = -0.0002677
-        pv_module.module_parameters['alpha_sc'] = 0.04
+        pv_module.module_parameters['EgRef'] = 1.121  # The energy bandgap at reference temperature in eV.
+        pv_module.module_parameters['dEgdT'] = -0.0002677 #The temperature dependence of EgRef at reference conditions in 1/K.
+        pv_module.module_parameters['alpha_sc'] = 0.04 # The short-circuit current temperature coefficient
 
     # module 2 - Aleo S19 285W / Danfoss DLX 2.9 'Aleo_Solar_S19H270' CEC
     elif converter_number == 'wr2':
