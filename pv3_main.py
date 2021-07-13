@@ -16,11 +16,12 @@ __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
 __version__ = "v0.0.2"
 
-from settings import setup_logger, postgres_session, read_from_csv
+from settings import setup_logger, postgres_session, read_from_csv, HTW_LON, HTW_LAT
 from pv3_export_polysun import export_htw_polysun, export_fred_polysun
 from pv3_export_pvsol import export_htw_pvsol, export_fred_pvsol
 from pv3_sonnja_pvlib import setup_pvlib_location_object, setup_modelchain, run_modelchain, setup_htw_pvsystem_wr3, \
     setup_htw_pvsystem_wr4, setup_htw_pvsystem_wr2, setup_htw_pvsystem_wr1, setup_htw_pvsystem_wr5
+from pv3_weatherdata import calculate_diffuse_irradiation
 
 import pandas as pd
 from sqlalchemy import *
@@ -42,11 +43,12 @@ if __name__ == "__main__":
 
     """Read data"""
     # read htw weatherdata from file
-    fn_htw = r'c:\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
-    df_htw = read_from_csv(fn_htw)
 
-    fn_fred = r'c:\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
-    df_fred = pd.read_csv(fn_fred, encoding='latin1', sep=',', index_col=0, parse_dates=True)
+    # fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
+    # df_htw_file = read_from_csv(fn_htw)
+
+    # fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
+    # df_fred_file = read_from_csv(fn_fred, sep=',')
 
     # read htw weatherdata from sonnja_db
     sql = text("""
@@ -55,12 +57,12 @@ if __name__ == "__main__":
         """)
     df_htw = pd.read_sql_query(sql, con)
     df_htw = df_htw.set_index('timestamp')
-    #
-    # # read open_FRED weatherdata from sonnja_db
+
+    # read open_FRED weatherdata from sonnja_db
     sql = text("""
-         SELECT  *                                  -- column
-         FROM    pv3.openfred_weatherdata_2015_htw  -- table
-         """)
+        SELECT  *                                  -- column
+        FROM    pv3.openfred_weatherdata_2015_htw  -- table
+        """)
     df_fred = pd.read_sql_query(sql, con)
     df_fred = df_fred.set_index('timestamp')
 
@@ -116,6 +118,11 @@ if __name__ == "__main__":
     mc3 = setup_modelchain(wr3, htw_location)
     mc4 = setup_modelchain(wr4, htw_location)
     mc5 = setup_modelchain(wr5, htw_location)
+    mc1_htw = setup_modelchain(wr1, htw_location)
+    mc2_htw = setup_modelchain(wr2, htw_location)
+    mc3_htw = setup_modelchain(wr3, htw_location)
+    mc4_htw = setup_modelchain(wr4, htw_location)
+    mc5_htw = setup_modelchain(wr5, htw_location)
 
     # run modelchain
     run_modelchain(mc1, df_fred_pvlib)
@@ -123,7 +130,13 @@ if __name__ == "__main__":
     run_modelchain(mc3, df_fred_pvlib)
     run_modelchain(mc4, df_fred_pvlib)
     run_modelchain(mc5, df_fred_pvlib)
-   # run_modelchain(mc1, df_htw_pvlib)
+
+    run_modelchain(mc1_htw, df_htw_pvlib)
+    run_modelchain(mc2_htw, df_htw_pvlib)
+    run_modelchain(mc3_htw, df_htw_pvlib)
+    run_modelchain(mc4_htw, df_htw_pvlib)
+    run_modelchain(mc5_htw, df_htw_pvlib)
+
     # export results
 
     # print(mc3.aoi)
@@ -131,6 +144,7 @@ if __name__ == "__main__":
     # print(mc3.ac)
 
     # yield
+    log.info(f'OpenFRED Weather Data')
     res_wr1_ac = mc1.ac
     res_wr1_ac_sum = res_wr1_ac.sum()/1000
     log.info(f'Annual yield WR1: {res_wr1_ac_sum}')
@@ -144,6 +158,26 @@ if __name__ == "__main__":
     res_wr4_ac_sum = res_wr4_ac.sum() / 1000
     log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
     res_wr5_ac = mc5.ac
+    res_wr5_ac_sum = res_wr5_ac.sum() / 1000
+    log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
+
+    res_sum = res_wr1_ac_sum + res_wr2_ac_sum + res_wr3_ac_sum + res_wr4_ac_sum + res_wr5_ac_sum
+    log.info(f'Annual yield SonnJA: {res_sum}')
+
+    log.info(f'HTW Weather Data')
+    res_wr1_ac = mc1_htw.ac
+    res_wr1_ac_sum = res_wr1_ac.sum()/1000
+    log.info(f'Annual yield WR1: {res_wr1_ac_sum}')
+    res_wr2_ac = mc2_htw.ac
+    res_wr2_ac_sum = res_wr2_ac.sum() / 1000
+    log.info(f'Annual yield WR2: {res_wr2_ac_sum}')
+    res_wr3_ac = mc3_htw.ac
+    res_wr3_ac_sum = res_wr3_ac.sum() / 1000
+    log.info(f'Annual yield WR3: {res_wr3_ac_sum}')
+    res_wr4_ac = mc4_htw.ac
+    res_wr4_ac_sum = res_wr4_ac.sum() / 1000
+    log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
+    res_wr5_ac = mc5_htw.ac
     res_wr5_ac_sum = res_wr5_ac.sum() / 1000
     log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
 
