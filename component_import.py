@@ -83,7 +83,7 @@ def get_danfoss_dlx_2_9():
         "dc_voltage": np.array(dc_voltage[0] * val_count + dc_voltage[1] * val_count + dc_voltage[2] * val_count),
         "dc_voltage_level": np.array(["Vmin"] * val_count + ["Vnom"] * val_count + ["Vmax"] * val_count),
         "p_ac_0": 2900.,
-        "p_nt": 1.
+        "p_nt": 1.  # power consumed while inverter is not delivering AC power
     }
 
     # call method that creates sandia inverter model
