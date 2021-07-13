@@ -45,8 +45,8 @@ if __name__ == "__main__":
     fn_htw = r'C:\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
     df_htw = read_from_csv(fn_htw)
 
-    fn_fred = r'C:\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
-    df_fred = pd.read_csv(fn_fred, enc oding='latin1', sep=',', index_col=0, parse_dates=True)
+    # fn_fred = r'C:\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
+    # df_fred = pd.read_csv(fn_fred, enc oding='latin1', sep=',', index_col=0, parse_dates=True)
 
     # read htw weatherdata from sonnja_db
     sql = text("""
