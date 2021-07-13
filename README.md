@@ -20,6 +20,7 @@ The special quality of this PV system is its conception as a research system: th
 `conda env create -f requirements.yml` <br>
 `activate d_py38_pv3`
 
+
 ### required packages for this REPO
 
 csv, colorlover, getpass, glob, IPython.display, json, matplotlib, plotly, pylab, os, pandas, scipy, scipy.interpolate,seaborn, sqalchemy, sys,pvlib
