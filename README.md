@@ -13,6 +13,7 @@ This repository is licensed under [BSD 3-Clause License (BSD-3-Clause)](https://
 `conda env create -f requirements.yml` <br>
 `activate d_py38_pv3`
 
+
 ### required packages for this REPO
 
 csv, colorlover, getpass, glob, IPython.display, json, matplotlib, plotly, pylab, os, pandas, scipy, scipy.interpolate,seaborn, sqalchemy, sys
