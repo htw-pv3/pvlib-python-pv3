@@ -126,39 +126,39 @@ def setup_weather_dataframe(weather_data):
     return data
 
 
-def erbs (ghi, zenith,datetime_or_doy, min_cos_zenith=0.065, max_zenith=87):
-    dni_extra = get_extra_radiation(datetime_or_doy)
+#def erbs (ghi, zenith,datetime_or_doy, min_cos_zenith=0.065, max_zenith=87):
+    #dni_extra = get_extra_radiation(datetime_or_doy)
 
-    kt = clearness_index(ghi, zenith, dni_extra, min_cos_zenith=min_cos_zenith,
-                         max_clearness_index=1)
+    #kt = clearness_index(ghi, zenith, dni_extra, min_cos_zenith=min_cos_zenith,
+    #                     max_clearness_index=1)
 
     # For Kt <= 0.22, set the diffuse fraction
-    df = 1 - 0.09*kt
+    #df = 1 - 0.09*kt
 
     # For Kt > 0.22 and Kt <= 0.8, set the diffuse fraction
-    df = np.where((kt > 0.22) & (kt <= 0.8),
-                  0.9511 - 0.1604*kt + 4.388*kt**2 -
-                  16.638*kt**3 + 12.336*kt**4,
-                  df)
+    #df = np.where((kt > 0.22) & (kt <= 0.8),
+    #              0.9511 - 0.1604*kt + 4.388*kt**2 -
+    #              16.638*kt**3 + 12.336*kt**4,
+    #              df)
 
     # For Kt > 0.8, set the diffuse fraction
-    df = np.where(kt > 0.8, 0.165, df)
+    #df = np.where(kt > 0.8, 0.165, df)
 
-    dhi = df * ghi
+    #dhi = df * ghi
 
-    dni = (ghi - dhi) / tools.cosd(zenith)
-    bad_values = (zenith > max_zenith) | (ghi < 0) | (dni < 0)
-    dni = np.where(bad_values, 0, dni)
+    #dni = (ghi - dhi) / tools.cosd(zenith)
+    #bad_values = (zenith > max_zenith) | (ghi < 0) | (dni < 0)
+    #dni = np.where(bad_values, 0, dni)
     # ensure that closure relationship remains valid
-    dhi = np.where(bad_values, ghi, dhi)
+    #dhi = np.where(bad_values, ghi, dhi)
 
-    data = OrderedDict()
-    data['dni'] = dni
-    data['dhi'] = dhi
-    data['kt'] = kt
+    #data = OrderedDict()
+    #data['dni'] = dni
+    #data['dhi'] = dhi
+    #data['kt'] = kt
 
-    if isinstance(datetime_or_doy, pd.DatetimeIndex):
-        data = pd.DataFrame(data, index=datetime_or_doy)
+    #if isinstance(datetime_or_doy, pd.DatetimeIndex):
+     #   data = pd.DataFrame(data, index=datetime_or_doy)
 
-    return data
+    #return data
 
