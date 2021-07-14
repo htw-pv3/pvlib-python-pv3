@@ -1,9 +1,51 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+HTW-PV3 - Weatherdata functions
+
+
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+"""
+
+__copyright__ = "© Ludwig Hülk"
+__license__ = "GNU Affero General Public License Version 3 (AGPL-3.0)"
+__url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
+__author__ = "Ludee;"
+__version__ = "v0.0.2"
+
+import datetime
+
 import pandas as pd
 import os
 from datetime import timedelta
+from collections import OrderedDict
 import pvlib
-from pvlib.pvsystem import PVSystem
-from pvlib.location import Location
+from pvlib import tools
+import numpy as np
+
+
+from pvlib.irradiance import clearness_index, get_extra_radiation
+
+
+
+def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
+    """
+
+    Returns
+    -------
+
+    """
+    # calculate dhi and dni for htw weatherdata
+    df_solarpos = pvlib.solarposition.spa_python(df.index, lat, lon)
+
+    df_irradiance = pvlib.irradiance.erbs(ghi=df.loc[:, parameter_name],
+                                          zenith=df_solarpos.zenith,
+                                          datetime_or_doy=df.index.dayofyear)
+    df_irradiance = pd.DataFrame(df_irradiance)
+
+    return df_irradiance
 
 
 def setup_converter_dataframe(converter, weather_data):
@@ -65,6 +107,7 @@ def setup_weather_dataframe(weather_data):
     data = pd.read_csv(
         os.path.join(file_directory, 'htw_wetter_weatherdata_2015.csv'),
         sep=';', header=[0], index_col=[0], parse_dates=True)
+
     # select and rename columns
     columns = {'G_hor_CMP6': 'ghi',
                'G_gen_CMP11': 'gni',
@@ -83,79 +126,39 @@ def setup_weather_dataframe(weather_data):
     return data
 
 
-def setup_pvlib_location_object():
-    """
-    Sets up pvlib Location object for HTW.
+#def erbs (ghi, zenith,datetime_or_doy, min_cos_zenith=0.065, max_zenith=87):
+    #dni_extra = get_extra_radiation(datetime_or_doy)
 
-    Returns
-    -------
-    :pvlib:`Location`
+    #kt = clearness_index(ghi, zenith, dni_extra, min_cos_zenith=min_cos_zenith,
+    #                     max_clearness_index=1)
 
-    """
-    return Location(latitude=52.456032, longitude=13.525282,
-                    tz='Europe/Berlin', altitude=60, name='HTW Berlin')
+    # For Kt <= 0.22, set the diffuse fraction
+    #df = 1 - 0.09*kt
 
+    # For Kt > 0.22 and Kt <= 0.8, set the diffuse fraction
+    #df = np.where((kt > 0.22) & (kt <= 0.8),
+    #              0.9511 - 0.1604*kt + 4.388*kt**2 -
+    #              16.638*kt**3 + 12.336*kt**4,
+    #              df)
 
-def setup_htw_pvlib_pvsystem(converter_number):
-    """
-    Sets up pvlib PVSystem for HTW Modules.
+    # For Kt > 0.8, set the diffuse fraction
+    #df = np.where(kt > 0.8, 0.165, df)
 
-    Parameters
-    -----------
-    converter_number : :obj:`str`
-        HTW converter number. Possible options are 'wr1', 'wr2', 'wr3', 'wr4',
-        'wr5'.
+    #dhi = df * ghi
 
-    Returns
-    -------
-    :pvlib:`PVSystem`
+    #dni = (ghi - dhi) / tools.cosd(zenith)
+    #bad_values = (zenith > max_zenith) | (ghi < 0) | (dni < 0)
+    #dni = np.where(bad_values, 0, dni)
+    # ensure that closure relationship remains valid
+    #dhi = np.where(bad_values, ghi, dhi)
 
-    """
+    #data = OrderedDict()
+    #data['dni'] = dni
+    #data['dhi'] = dhi
+    #data['kt'] = kt
 
-    # get module and inverter parameters
-    sandia_modules = pvlib.pvsystem.retrieve_sam('SandiaMod')
-    sandia_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
-    CEC_modules = pvlib.pvsystem.retrieve_sam('CECMod')
-    CEC_inverters = pvlib.pvsystem.retrieve_sam('sandiainverter')
+    #if isinstance(datetime_or_doy, pd.DatetimeIndex):
+     #   data = pd.DataFrame(data, index=datetime_or_doy)
 
-    inv_sma = 'SMA_Solar_Technology_AG__SB3000HFUS_30___240V_240V__CEC_2011_'
-    inv_danfoss = 'Danfoss_Solar__DLX_2_9_UL__240V__240V__CEC_2013_'
+    #return data
 
-    # module 1 - Schott aSi 105W / Danfoss DLX 2.9
-    if converter_number == 'wr1':
-        pass
-    # module 2 - Aleo S19 285W / Danfoss DLX 2.9 'Aleo_Solar_S19H270' CEC
-    elif converter_number == 'wr2':
-        pass
-
-    # module 3 - Aleo S18 240W / Danfoss DLX 2.9
-    elif converter_number == 'wr3':
-        pv_module = PVSystem(module='aleo_solar_S18_240', inverter=inv_danfoss,
-                             module_parameters=CEC_modules[
-                                 'aleo_solar_S18_240'],
-                             inverter_parameters=CEC_inverters[inv_danfoss],
-                             surface_tilt=14.57, surface_azimuth=215.,
-                             albedo=0.2,
-                             modules_per_string=14, strings_per_inverter=1,
-                             name='HTW_module_3')
-        pv_module.module_parameters['EgRef'] = 1.121
-        pv_module.module_parameters['dEgdT'] = -0.0002677
-        pv_module.module_parameters['alpha_sc'] = 0.04
-
-    # module 4 - Aleo S19 245W / SMA SB 3000HF-30
-    elif converter_number == 'wr4':
-        pv_module = PVSystem(module='Aleo_Solar_S19U245_ulr', inverter=inv_sma,
-                             module_parameters=CEC_modules[
-                                 'Aleo_Solar_S19U245_ulr'],
-                             inverter_parameters=CEC_inverters[inv_sma],
-                             surface_tilt=14.57, surface_azimuth=215.,
-                             albedo=0.2,
-                             modules_per_string=13, strings_per_inverter=1,
-                             name='HTW_module_4')
-        pv_module.module_parameters['EgRef'] = 1.121
-        pv_module.module_parameters['dEgdT'] = -0.0002677
-        pv_module.module_parameters['alpha_sc'] = 0.03
-    # module 5 - Schott aSi 105W / SMA SB 3000HF-30
-    elif converter_number == 'wr5':
-        pass
-    return pv_module
