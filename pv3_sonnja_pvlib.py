@@ -19,6 +19,7 @@ import pvlib
 from pvlib.location import Location
 from pvlib.pvsystem import PVSystem
 from pvlib.modelchain import ModelChain
+from pvlib.temperature import TEMPERATURE_MODEL_PARAMETERS
 
 from settings import HTW_LAT, HTW_LON
 
@@ -26,6 +27,8 @@ from component_import import get_sma_sb_3000hf, get_danfoss_dlx_2_9, get_aleo_s1
 
 import logging
 log = logging.getLogger(__name__)
+
+temperature_model_parameters = TEMPERATURE_MODEL_PARAMETERS['sapm']['open_rack_glass_glass']
 
 
 def setup_pvlib_location_object():
@@ -153,6 +156,7 @@ def setup_htw_pvsystem_wr1():
                          albedo=0.2,
                          modules_per_string=10,
                          strings_per_inverter=3,
+                         temperature_model_parameters=temperature_model_parameters,
                          name='HTW_WR1')
 
     return model_wr1
@@ -176,6 +180,7 @@ def setup_htw_pvsystem_wr2():
                          albedo=0.2,
                          modules_per_string=11,
                          strings_per_inverter=1,
+                         temperature_model_parameters=temperature_model_parameters,
                          name='HTW_WR2')
 
     return model_wr2
@@ -197,6 +202,7 @@ def setup_htw_pvsystem_wr3():
                          albedo=0.2,
                          modules_per_string=14,
                          strings_per_inverter=1,
+                         temperature_model_parameters=temperature_model_parameters,
                          name='HTW_WR3')
 
     return model_wr3
@@ -218,6 +224,7 @@ def setup_htw_pvsystem_wr4():
                          albedo=0.2,
                          modules_per_string=13,
                          strings_per_inverter=1,
+                         temperature_model_parameters=temperature_model_parameters,
                          name='HTW_WR4')
 
     return model_wr4
@@ -239,6 +246,7 @@ def setup_htw_pvsystem_wr5():
                          albedo=0.2,
                          modules_per_string=10,
                          strings_per_inverter=3,
+                         temperature_model_parameters=temperature_model_parameters,
                          name='HTW_WR5')
 
     return model_wr5
