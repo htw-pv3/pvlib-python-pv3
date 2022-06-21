@@ -63,19 +63,22 @@ def setup_logger():
 
 def postgres_session():
     """SQLAlchemy session object with valid connection to local database
-
+    Inputs
+    -------
+    port : int
+        Database port
+    password : str
+        Database password
     Returns
     -------
     con : connection
         SQLAlchemy connection object.
-
-    TODO: Docstring + Use config.py
     """
 
     print('Please provide connection parameters to database:\n' +
           'Hit [Enter] to take defaults')
     host = 'localhost'  # input('host (default 127.0.0.1): ')
-    port = '5432'  # input('port (default 5432): ')
+    port = int(input('port (default 5432): ') or 5432)  # port = '5435'
     database = 'sonnja_db'  # input("database name (default 'sonnja_db'): ")
     user = 'sonnja'  # input('user (default postgres): ')
     password = input('password: ')
