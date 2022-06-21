@@ -16,7 +16,7 @@ __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
 __version__ = "v0.0.2"
 
-from settings import setup_logger, postgres_session, read_from_csv, HTW_LON, HTW_LAT
+from settings import setup_logger, postgres_session, query_database, read_from_csv, HTW_LON, HTW_LAT
 from pv3_sonnja_pvlib import setup_pvlib_location_object, setup_modelchain, run_modelchain, setup_htw_pvsystem_wr3, \
     setup_htw_pvsystem_wr4, setup_htw_pvsystem_wr2, setup_htw_pvsystem_wr1, setup_htw_pvsystem_wr5
 from pv3_weatherdata import calculate_diffuse_irradiation
@@ -40,21 +40,19 @@ if __name__ == "__main__":
     con = postgres_session()
 
     """Read data"""
-    # read htw weatherdata from file
 
+    # read htw weatherdata from file
     # fn_htw = r'.\data\pv3_2015\pv3_weather_2015_filled_mview.csv'
     # df_htw_file = read_from_csv(fn_htw)
-
     # fn_fred = r'.\data\pv3_2015\openfred_weatherdata_2015_htw.csv'
     # df_fred_file = read_from_csv(fn_fred, sep=',')
 
     # read htw weatherdata from sonnja_db
-    sql = text("""
-        SELECT  *                                  -- column
-        FROM    pv3.pv3_weather_2015_filled_mview  -- table
-        """)
-    df_htw = pd.read_sql_query(sql, con)
+    schema = 'pv3'
+    table = 'pv3_weather_2015_filled_mview'
+    df_htw = query_database(con, schema, table)
     df_htw = df_htw.set_index('timestamp')
+
     htw_weatherdata_names = {"g_hor_si": "ghi",
                              'v_wind': "wind_speed",
                              't_luft': "temp_air",
@@ -66,11 +64,9 @@ if __name__ == "__main__":
     df_htw_pvlib = df_htw_select.resample('H').mean()
 
     # read open_FRED weatherdata from sonnja_db
-    sql = text("""
-        SELECT  *                                  -- column
-        FROM    pv3.openfred_weatherdata_2015_htw  -- table
-        """)
-    df_fred = pd.read_sql_query(sql, con)
+    schema = 'pv3'
+    table = 'openfred_weatherdata_2015_htw'
+    df_fred = query_database(con, schema, table)
     df_fred = df_fred.set_index('timestamp')
 
 
