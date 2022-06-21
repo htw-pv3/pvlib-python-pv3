@@ -25,24 +25,41 @@ import pvlib
 from pvlib import tools
 import numpy as np
 
-
 from pvlib.irradiance import clearness_index, get_extra_radiation
-
 
 
 def calculate_diffuse_irradiation(df, parameter_name, lat, lon):
     """
+    Calculate diffuse irradiation
 
+    Parameters
+    ----------
+    df : DataFrame
+        Global Horizontal Irradiance (GHI)
+    parameter_name : str
+        Name of column with GHI
+    lat : float
+        Latitude
+    lon : float
+        Longitude
     Returns
     -------
-
+    df_irradiance : DataFrame
+        Calculated
+            dni: the modeled direct normal irradiance in W/m^2.
+            dhi: the modeled diffuse horizontal irradiance in W/m^2.
+            kt: ratio of global to extraterrestrial irradiance on a horizontal plane.
     """
+
     # calculate dhi and dni for htw weatherdata
     df_solarpos = pvlib.solarposition.spa_python(df.index, lat, lon)
 
+    # Calculate dhi and dni from parameter
     df_irradiance = pvlib.irradiance.erbs(ghi=df.loc[:, parameter_name],
                                           zenith=df_solarpos.zenith,
                                           datetime_or_doy=df.index.dayofyear)
+
+    # Setup DataFrame
     df_irradiance = pd.DataFrame(df_irradiance)
 
     return df_irradiance
@@ -121,44 +138,42 @@ def setup_weather_dataframe(weather_data):
     elif weather_data == 'MERRA':
         data = data.resample('60Min', base=30,
                              loffset=timedelta(hours=0.5)).mean()
-    data = data.tz_localize('Etc/GMT-1') # GMT+1??
+    data = data.tz_localize('Etc/GMT-1')  # GMT+1??
     data = data.tz_convert('Europe/Berlin')
     return data
 
+# def erbs (ghi, zenith,datetime_or_doy, min_cos_zenith=0.065, max_zenith=87):
+    # dni_extra = get_extra_radiation(datetime_or_doy)
 
-#def erbs (ghi, zenith,datetime_or_doy, min_cos_zenith=0.065, max_zenith=87):
-    #dni_extra = get_extra_radiation(datetime_or_doy)
-
-    #kt = clearness_index(ghi, zenith, dni_extra, min_cos_zenith=min_cos_zenith,
+    # kt = clearness_index(ghi, zenith, dni_extra, min_cos_zenith=min_cos_zenith,
     #                     max_clearness_index=1)
 
     # For Kt <= 0.22, set the diffuse fraction
-    #df = 1 - 0.09*kt
+    # df = 1 - 0.09*kt
 
     # For Kt > 0.22 and Kt <= 0.8, set the diffuse fraction
-    #df = np.where((kt > 0.22) & (kt <= 0.8),
+    # df = np.where((kt > 0.22) & (kt <= 0.8),
     #              0.9511 - 0.1604*kt + 4.388*kt**2 -
     #              16.638*kt**3 + 12.336*kt**4,
     #              df)
 
     # For Kt > 0.8, set the diffuse fraction
-    #df = np.where(kt > 0.8, 0.165, df)
+    # df = np.where(kt > 0.8, 0.165, df)
 
-    #dhi = df * ghi
+    # dhi = df * ghi
 
-    #dni = (ghi - dhi) / tools.cosd(zenith)
-    #bad_values = (zenith > max_zenith) | (ghi < 0) | (dni < 0)
-    #dni = np.where(bad_values, 0, dni)
+    # dni = (ghi - dhi) / tools.cosd(zenith)
+    # bad_values = (zenith > max_zenith) | (ghi < 0) | (dni < 0)
+    # dni = np.where(bad_values, 0, dni)
     # ensure that closure relationship remains valid
-    #dhi = np.where(bad_values, ghi, dhi)
+    # dhi = np.where(bad_values, ghi, dhi)
 
-    #data = OrderedDict()
-    #data['dni'] = dni
-    #data['dhi'] = dhi
-    #data['kt'] = kt
+    # data = OrderedDict()
+    # data['dni'] = dni
+    # data['dhi'] = dhi
+    # data['kt'] = kt
 
-    #if isinstance(datetime_or_doy, pd.DatetimeIndex):
-     #   data = pd.DataFrame(data, index=datetime_or_doy)
+    # if isinstance(datetime_or_doy, pd.DatetimeIndex):
+    #   data = pd.DataFrame(data, index=datetime_or_doy)
 
-    #return data
-
+    # return data
