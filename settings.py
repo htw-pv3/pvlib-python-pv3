@@ -105,6 +105,13 @@ def query_database(con, schema_name, table_name):
     return df
 
 
+def query_database_metadata(con, schema_name, table_name):
+    sql_query = text(f"""SELECT obj_description('{schema_name}.{table_name}'::regclass);""")
+    meta_str = pd.read_sql_query(sql_query, con).loc[0, 'obj_description']
+
+    return meta_str
+
+
 def read_from_csv(file_name, sep=';'):
     df = pd.read_csv(file_name, encoding='latin1', sep=sep, index_col=0, parse_dates=True)  # , skiprows=3)
 
