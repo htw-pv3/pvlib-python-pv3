@@ -44,14 +44,16 @@ def results_modelchain(mc, weather):
     filename = f'pv3_pvlib_{weather}_{system_name}'
     write_to_csv(f'./data/{filename}.csv', df, append=False)
 
-    return df, filename
+    return df
 
 
-def results_modelchain_per_month(df, filename):
-    df_month = df['ac'].resample('M').sum()
-    # df_month = df_month['AC'].round(decimals=2)
+def results_modelchain_per_month(mc, df, weather):
+    system_name = mc.system.name
+    df_month = df[['ac', 'p_mp']].resample('M').sum()
+    df_month.insert(0, "weather", weather, True)
+    df_month.insert(0, "system_name", system_name, True)
 
-    write_to_csv(f'./data/{filename}_month.csv', df_month, append=False)
+    write_to_csv(f'./data/pv3_pvlib_month.csv', df_month, append=True)
 
     return df_month
 
@@ -65,8 +67,7 @@ def results_modelchain_annual_yield(mc, weather):
                       columns=['weather', 'system', 'annual_yield'])
     df.set_index(["weather", 'system'], inplace=True)
 
-    filename = f'pv3_pvlib_{weather}_annual'
-    write_to_csv(f'./data/{filename}.csv', df)
+    write_to_csv('./data/pv3_pvlib_annual.csv', df)
 
     log.info(f'Annual yield for {system_name}: {annual_yield}')
 
