@@ -34,10 +34,10 @@ if __name__ == "__main__":
     """logging"""
     log = setup_logger()
     start_time = time.time()
-    log.info(f'PV3 model started with data version: {DATA_VERSION}')
 
     """database"""
     con = postgres_session()
+    log.info(f'PV3 model started with data version: {DATA_VERSION}')
 
     """Read data"""
 
