@@ -16,10 +16,11 @@ __url__ = "https://www.gnu.org/licenses/agpl-3.0.en.html"
 __author__ = "Ludee;"
 __version__ = "v0.0.2"
 
-from settings import setup_logger, postgres_session, query_database, read_from_csv, HTW_LON, HTW_LAT
+from settings import setup_logger, postgres_session, query_database, read_from_csv, write_to_csv, HTW_LON, HTW_LAT
 from pv3_sonnja_pvlib import setup_pvlib_location_object, setup_modelchain, run_modelchain, setup_htw_pvsystem_wr3, \
     setup_htw_pvsystem_wr4, setup_htw_pvsystem_wr2, setup_htw_pvsystem_wr1, setup_htw_pvsystem_wr5
 from pv3_weatherdata import calculate_diffuse_irradiation
+from pv3_results import results_modelchain_annual_yield
 
 import pandas as pd
 from sqlalchemy import *
@@ -121,9 +122,11 @@ if __name__ == "__main__":
 
     # yield
     log.info(f'OpenFRED Weather Data')
-    res_wr1_ac = mc1.ac
-    res_wr1_ac_sum = res_wr1_ac.sum()/1000
-    log.info(f'Annual yield WR1: {res_wr1_ac_sum}')
+
+    mc_ac_1, res_wr1_ac_sum = results_modelchain_annual_yield(mc1)
+    filename = 'pv3_pvlib_mc1.csv'
+    write_to_csv(f'./data/{filename}', mc_ac_1)
+
     res_wr2_ac = mc2.ac
     res_wr2_ac_sum = res_wr2_ac.sum() / 1000
     log.info(f'Annual yield WR2: {res_wr2_ac_sum}')

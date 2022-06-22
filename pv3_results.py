@@ -22,11 +22,12 @@ from settings import setup_logger
 log = setup_logger()
 
 
-def results_export_modelchain(mc):
+def results_modelchain_annual_yield(mc):
+
     mc_ac = mc.ac
-    annual_yield = mc_ac.sum() / 1000
+    annual_yield = round(mc_ac.sum() / 1000, 3)
     system_name = mc.system.name
 
     log.info(f'Annual yield for {system_name}: {annual_yield}')
 
-    return annual_yield
+    return mc_ac, annual_yield
