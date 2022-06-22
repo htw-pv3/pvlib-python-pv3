@@ -74,96 +74,71 @@ if __name__ == "__main__":
     # location
     htw_location = setup_pvlib_location_object()
 
-    # pv system
+    # Set up pv systems
     wr1 = setup_htw_pvsystem_wr1()
-    # print(wr1)
     wr2 = setup_htw_pvsystem_wr2()
-    # print(wr2)
     wr3 = setup_htw_pvsystem_wr3()
-    # print(wr3)
     wr4 = setup_htw_pvsystem_wr4()
-    # print(wr4)
     wr5 = setup_htw_pvsystem_wr5()
-    # print(wr5)
+
 
     # weather data
     df_fred_pvlib = df_fred.resample('H').mean()
 
-    # model chain
-    mc1 = setup_modelchain(wr1, htw_location)
-    mc2 = setup_modelchain(wr2, htw_location)
-    mc3 = setup_modelchain(wr3, htw_location)
-    mc4 = setup_modelchain(wr4, htw_location)
-    mc5 = setup_modelchain(wr5, htw_location)
-    mc1_htw = setup_modelchain(wr1, htw_location)
-    mc2_htw = setup_modelchain(wr2, htw_location)
-    mc3_htw = setup_modelchain(wr3, htw_location)
-    mc4_htw = setup_modelchain(wr4, htw_location)
-    mc5_htw = setup_modelchain(wr5, htw_location)
+    # Set up list of pv systems
+    pv_systems = [wr1,wr2,wr3,wr4,wr5]
+    filenames = ["pv3_pvlib_mc1","pv3_pvlib_mc2","pv3_pvlib_mc3","pv3_pvlib_mc4","pv3_pvlib_mc5"]
 
-    # run modelchain
-    run_modelchain(mc1, df_fred_pvlib)
-    run_modelchain(mc2, df_fred_pvlib)
-    run_modelchain(mc3, df_fred_pvlib)
-    run_modelchain(mc4, df_fred_pvlib)
-    run_modelchain(mc5, df_fred_pvlib)
+    # Initialize list for mcs and mcs_htw
+    results_fred_annual_wr = []
+    results_htw_annual_wr = []
 
-    run_modelchain(mc1_htw, df_htw_pvlib)
-    run_modelchain(mc2_htw, df_htw_pvlib)
-    run_modelchain(mc3_htw, df_htw_pvlib)
-    run_modelchain(mc4_htw, df_htw_pvlib)
-    run_modelchain(mc5_htw, df_htw_pvlib)
+    # For loop iterates over all pv systems and saves results in csv files according to filenames
+    for idx, system in enumerate(pv_systems):
+        # setup Modelchain
+        mc_fred = setup_modelchain(system,htw_location)
+        mc_htw = setup_modelchain(system,htw_location)
 
-    # export results
+        # run Modelchain
+        run_modelchain(mc_fred, df_fred_pvlib)
+        run_modelchain(mc_htw, df_htw_pvlib)
 
-    # print(mc3.aoi)
-    # print(mc3.dc)
-    # print(mc3.ac)
+        # Calculate annual and monthly yield of Modelchain (PV System)
 
-    # yield
+            # output1: raw wr yield ; output2: annual wr yield
+        log.info(f'Yield from OpenFRED Weather Data')
+        mc_ac_fred, res_ac_sum_fred = results_modelchain_annual_yield(mc_fred) 
+        res_ac_month_fred = results_per_month(mc_ac_fred)
+        
+        log.info(f'Yield from HTW Weather Data')
+        mc_ac_htw, res_ac_sum_htw = results_modelchain_annual_yield(mc_htw)
+        res_ac_month_htw = results_per_month(mc_ac_htw)
+
+        # Write data to csv files
+        write_to_csv(f'./data/{filenames[idx]}_fred.csv', mc_ac_fred)
+        write_to_csv(f'./data/{filenames[idx]}_fred_month.csv', res_ac_month_fred)        
+        write_to_csv(f'./data/{filenames[idx]}_htw.csv', mc_ac_htw)
+        write_to_csv(f'./data/{filenames[idx]}_htw_month.csv', res_ac_month_htw)
+
+        #Save all mcs and mcs_htw in list
+        results_fred_annual_wr.append(res_ac_sum_fred)
+        results_htw_annual_wr.append(res_ac_sum_htw)
+
+    # Printout Statements fred
     log.info(f'OpenFRED Weather Data')
 
-    mc_ac_1, res_wr1_ac_sum = results_modelchain_annual_yield(mc1)
-    filename = 'pv3_pvlib_mc1'
-    write_to_csv(f'./data/{filename}.csv', mc_ac_1)
-    res_wr1_ac_month = results_per_month(mc_ac_1)
-    write_to_csv(f'./data/{filename}_month.csv', res_wr1_ac_month)
+    for idx, fred_yield in enumerate(results_fred_annual_wr,start=1):
+        log.info(f'Annual yield WR{idx}: {fred_yield}')
 
-    res_wr2_ac = mc2.ac
-    res_wr2_ac_sum = res_wr2_ac.sum() / 1000
-    log.info(f'Annual yield WR2: {res_wr2_ac_sum}')
-    res_wr3_ac = mc3.ac
-    res_wr3_ac_sum = res_wr3_ac.sum() / 1000
-    log.info(f'Annual yield WR3: {res_wr3_ac_sum}')
-    res_wr4_ac = mc4.ac
-    res_wr4_ac_sum = res_wr4_ac.sum() / 1000
-    log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
-    res_wr5_ac = mc5.ac
-    res_wr5_ac_sum = res_wr5_ac.sum() / 1000
-    log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
+    log.info(f'Annual yield SonnJA: {sum(results_fred_annual_wr)}')
 
-    res_sum = res_wr1_ac_sum + res_wr2_ac_sum + res_wr3_ac_sum + res_wr4_ac_sum + res_wr5_ac_sum
-    log.info(f'Annual yield SonnJA: {res_sum}')
-
+    # Printout Statements HTW
     log.info(f'HTW Weather Data')
-    res_wr1_ac = mc1_htw.ac
-    res_wr1_ac_sum = res_wr1_ac.sum()/1000
-    log.info(f'Annual yield WR1: {res_wr1_ac_sum}')
-    res_wr2_ac = mc2_htw.ac
-    res_wr2_ac_sum = res_wr2_ac.sum() / 1000
-    log.info(f'Annual yield WR2: {res_wr2_ac_sum}')
-    res_wr3_ac = mc3_htw.ac
-    res_wr3_ac_sum = res_wr3_ac.sum() / 1000
-    log.info(f'Annual yield WR3: {res_wr3_ac_sum}')
-    res_wr4_ac = mc4_htw.ac
-    res_wr4_ac_sum = res_wr4_ac.sum() / 1000
-    log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
-    res_wr5_ac = mc5_htw.ac
-    res_wr5_ac_sum = res_wr5_ac.sum() / 1000
-    log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
 
-    res_sum = res_wr1_ac_sum + res_wr2_ac_sum + res_wr3_ac_sum + res_wr4_ac_sum + res_wr5_ac_sum
-    log.info(f'Annual yield SonnJA: {res_sum}')
+    for idx, htw_yield in enumerate(results_htw_annual_wr,start=1):
+        log.info(f'Annual yield WR{idx}: {htw_yield}')
+
+    log.info(f'Annual yield SonnJA: {sum(results_htw_annual_wr)}')
 
     """close"""
     log.info('PV3 SonnJA pvlib model successfully executed in {:.2f} seconds'
