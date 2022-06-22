@@ -48,19 +48,20 @@ if __name__ == "__main__":
     # df_fred_file = read_from_csv(fn_fred, sep=',')
 
     # read htw weatherdata from sonnja_db
-    # schema = 'pv3'
-    # table = 'pv3_weather_2015_filled_mview'
-    # df_htw = query_database(con, schema, table)
-    #
-    # htw_weatherdata_names = {"g_hor_si": "ghi",
-    #                          'v_wind': "wind_speed",
-    #                          't_luft': "temp_air",
-    #                          }
-    # df_htw = df_htw.rename(columns=htw_weatherdata_names)
-    # df_dhi = calculate_diffuse_irradiation(df_htw, "ghi", HTW_LAT, HTW_LON)
-    # df_htw = df_htw.merge(df_dhi[['dhi', 'dni']], left_index=True, right_index=True)
-    # df_htw_select = df_htw.loc[:, ["ghi", "dhi", 'dni', "wind_speed", "temp_air"]]
-    # df_htw_pvlib = df_htw_select.resample('H').mean()
+    # ToDO: Create function for weather data import
+    schema = 'pv3'
+    table = 'pv3_weather_2015_filled_mview'
+    df_htw = query_database(con, schema, table)
+
+    htw_weatherdata_names = {"g_hor_si": "ghi",
+                             'v_wind': "wind_speed",
+                             't_luft': "temp_air",
+                             }
+    df_htw = df_htw.rename(columns=htw_weatherdata_names)
+    df_dhi = calculate_diffuse_irradiation(df_htw, "ghi", HTW_LAT, HTW_LON)
+    df_htw = df_htw.merge(df_dhi[['dhi', 'dni']], left_index=True, right_index=True)
+    df_htw_select = df_htw.loc[:, ["ghi", "dhi", 'dni', "wind_speed", "temp_air"]]
+    df_htw_pvlib = df_htw_select.resample('H').mean()
 
     # read open_FRED weatherdata from sonnja_db
     schema = 'pv3'
@@ -68,8 +69,7 @@ if __name__ == "__main__":
     df_fred = query_database(con, schema, table)
     df_fred_pvlib = df_fred.resample('H').mean()
 
-    # Run pvlib model
-
+    """Run pvlib model"""
     # location
     htw_location = setup_pvlib_location_object()
 
@@ -79,86 +79,28 @@ if __name__ == "__main__":
     wr3 = setup_htw_pvsystem_wr3()
     wr4 = setup_htw_pvsystem_wr4()
     wr5 = setup_htw_pvsystem_wr5()
+    pv_systems = [wr1, wr2, wr3, wr4, wr5]
 
     # model chain
-    mc1_fred = setup_modelchain(wr1, htw_location)
-    mc2_fred = setup_modelchain(wr2, htw_location)
-    mc3_fred = setup_modelchain(wr3, htw_location)
-    mc4_fred = setup_modelchain(wr4, htw_location)
-    mc5_fred = setup_modelchain(wr5, htw_location)
-    # mc1_htw = setup_modelchain(wr1, htw_location)
-    # mc2_htw = setup_modelchain(wr2, htw_location)
-    # mc3_htw = setup_modelchain(wr3, htw_location)
-    # mc4_htw = setup_modelchain(wr4, htw_location)
-    # mc5_htw = setup_modelchain(wr5, htw_location)
+    for idx, system in enumerate(pv_systems):
+        # setup Modelchain
+        mc_fred = setup_modelchain(system, htw_location)
+        mc_htw = setup_modelchain(system, htw_location)
 
-    # run modelchain
-    run_modelchain(mc1_fred, df_fred_pvlib)
-    run_modelchain(mc2_fred, df_fred_pvlib)
-    run_modelchain(mc3_fred, df_fred_pvlib)
-    run_modelchain(mc4_fred, df_fred_pvlib)
-    run_modelchain(mc5_fred, df_fred_pvlib)
-    # run_modelchain(mc1_htw, df_htw_pvlib)
-    # run_modelchain(mc2_htw, df_htw_pvlib)
-    # run_modelchain(mc3_htw, df_htw_pvlib)
-    # run_modelchain(mc4_htw, df_htw_pvlib)
-    # run_modelchain(mc5_htw, df_htw_pvlib)
-
-    # export results
-
-    # print(mc3.aoi)
-    # print(mc3.dc)
-    # print(mc3.ac)
-
-    # yield
-    log.info(f'OpenFRED Weather Data')
-
-    df_mc1_fred, filename = results_modelchain(mc1_fred, 'fred')
-    df_month_mc1_fred = results_modelchain_per_month(df_mc1_fred, filename)
-    annual_yield_mc1_fred = results_modelchain_annual_yield(mc1_fred, 'fred')
-
-    # mc_ac_1, res_wr1_ac_sum = results_modelchain_annual_yield(mc1_fred, 'fred')
-    # filename = 'pv3_pvlib_mc1'
-    # write_to_csv(f'./data/{filename}.csv', mc_ac_1, append=False)
-    # res_wr1_ac_month = results_modelchain_per_month(mc_ac_1)
-    # write_to_csv(f'./data/{filename}_month.csv', res_wr1_ac_month, append=False)
+        # run modelchain
+        run_modelchain(mc_fred, df_fred_pvlib)
+        run_modelchain(mc_htw, df_htw_pvlib)
 
 
-    # res_wr2_ac = mc2.ac
-    # res_wr2_ac_sum = res_wr2_ac.sum() / 1000
-    # log.info(f'Annual yield WR2: {res_wr2_ac_sum}')
-    # res_wr3_ac = mc3.ac
-    # res_wr3_ac_sum = res_wr3_ac.sum() / 1000
-    # log.info(f'Annual yield WR3: {res_wr3_ac_sum}')
-    # res_wr4_ac = mc4.ac
-    # res_wr4_ac_sum = res_wr4_ac.sum() / 1000
-    # log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
-    # res_wr5_ac = mc5.ac
-    # res_wr5_ac_sum = res_wr5_ac.sum() / 1000
-    # log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
-    #
-    # res_sum = res_wr1_ac_sum + res_wr2_ac_sum + res_wr3_ac_sum + res_wr4_ac_sum + res_wr5_ac_sum
-    # log.info(f'Annual yield SonnJA: {res_sum}')
-    #
-    # log.info(f'HTW Weather Data')
-    # res_wr1_ac = mc1_htw.ac
-    # res_wr1_ac_sum = res_wr1_ac.sum()/1000
-    # log.info(f'Annual yield WR1: {res_wr1_ac_sum}')
-    # res_wr2_ac = mc2_htw.ac
-    # res_wr2_ac_sum = res_wr2_ac.sum() / 1000
-    # log.info(f'Annual yield WR2: {res_wr2_ac_sum}')
-    # res_wr3_ac = mc3_htw.ac
-    # res_wr3_ac_sum = res_wr3_ac.sum() / 1000
-    # log.info(f'Annual yield WR3: {res_wr3_ac_sum}')
-    # res_wr4_ac = mc4_htw.ac
-    # res_wr4_ac_sum = res_wr4_ac.sum() / 1000
-    # log.info(f'Annual yield WR4: {res_wr4_ac_sum}')
-    # res_wr5_ac = mc5_htw.ac
-    # res_wr5_ac_sum = res_wr5_ac.sum() / 1000
-    # log.info(f'Annual yield WR5: {res_wr5_ac_sum}')
-    #
-    # res_sum = res_wr1_ac_sum + res_wr2_ac_sum + res_wr3_ac_sum + res_wr4_ac_sum + res_wr5_ac_sum
-    # log.info(f'Annual yield SonnJA: {res_sum}')
+        """Export results"""
+        df_fred = results_modelchain(mc_fred, 'fred')
+        df_month_fred = results_modelchain_per_month(mc_fred, df_fred, 'fred')
+        annual_yield_fred = results_modelchain_annual_yield(mc_fred, 'fred')
+
+        df_htw = results_modelchain(mc_htw, 'htw')
+        df_month_htw = results_modelchain_per_month(mc_htw, df_htw, 'htw')
+        annual_yield_htw = results_modelchain_annual_yield(mc_htw, 'htw')
+
 
     """close"""
     log.info('PV3 SonnJA pvlib model successfully executed in {:.2f} seconds'
