@@ -18,6 +18,8 @@ __version__ = "v0.0.2"
 
 from settings import setup_logger
 
+import pandas as pd
+
 """logging"""
 log = setup_logger()
 
@@ -31,3 +33,12 @@ def results_modelchain_annual_yield(mc):
     log.info(f'Annual yield for {system_name}: {annual_yield}')
 
     return mc_ac, annual_yield
+
+
+def results_per_month(mc):
+
+    frame = {'AC': mc}
+    df = pd.DataFrame(frame)
+    df_month = df.resample('M').sum()
+
+    return df_month

@@ -20,7 +20,7 @@ from settings import setup_logger, postgres_session, query_database, read_from_c
 from pv3_sonnja_pvlib import setup_pvlib_location_object, setup_modelchain, run_modelchain, setup_htw_pvsystem_wr3, \
     setup_htw_pvsystem_wr4, setup_htw_pvsystem_wr2, setup_htw_pvsystem_wr1, setup_htw_pvsystem_wr5
 from pv3_weatherdata import calculate_diffuse_irradiation
-from pv3_results import results_modelchain_annual_yield
+from pv3_results import results_modelchain_annual_yield, results_per_month
 
 import pandas as pd
 from sqlalchemy import *
@@ -124,8 +124,10 @@ if __name__ == "__main__":
     log.info(f'OpenFRED Weather Data')
 
     mc_ac_1, res_wr1_ac_sum = results_modelchain_annual_yield(mc1)
-    filename = 'pv3_pvlib_mc1.csv'
-    write_to_csv(f'./data/{filename}', mc_ac_1)
+    filename = 'pv3_pvlib_mc1'
+    write_to_csv(f'./data/{filename}.csv', mc_ac_1)
+    res_wr1_ac_month = results_per_month(mc_ac_1)
+    write_to_csv(f'./data/{filename}_month.csv', res_wr1_ac_month)
 
     res_wr2_ac = mc2.ac
     res_wr2_ac_sum = res_wr2_ac.sum() / 1000
