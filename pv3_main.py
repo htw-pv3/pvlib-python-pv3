@@ -49,9 +49,8 @@ if __name__ == "__main__":
 
     # read htw weatherdata from sonnja_db
     schema = 'pv3'
-    table = 'pv3_weather_2015_filled_mview'
+    table = 'htw_weatherdata_2015'
     df_htw = query_database(con, schema, table)
-    df_htw = df_htw.set_index('timestamp')
 
     htw_weatherdata_names = {"g_hor_si": "ghi",
                              'v_wind': "wind_speed",
@@ -67,7 +66,6 @@ if __name__ == "__main__":
     schema = 'pv3'
     table = 'openfred_weatherdata_2015_htw'
     df_fred = query_database(con, schema, table)
-    df_fred = df_fred.set_index('timestamp')
 
 
     # Run pvlib model
