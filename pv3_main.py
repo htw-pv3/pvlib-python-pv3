@@ -75,15 +75,15 @@ if __name__ == "__main__":
 
     # pv system
     wr1 = setup_htw_pvsystem_wr1()
-    print(wr1)
+    # print(wr1)
     wr2 = setup_htw_pvsystem_wr2()
-    print(wr2)
+    # print(wr2)
     wr3 = setup_htw_pvsystem_wr3()
-    print(wr3)
+    # print(wr3)
     wr4 = setup_htw_pvsystem_wr4()
-    print(wr4)
+    # print(wr4)
     wr5 = setup_htw_pvsystem_wr5()
-    print(wr5)
+    # print(wr5)
 
     # weather data
     df_fred_pvlib = df_fred.resample('H').mean()

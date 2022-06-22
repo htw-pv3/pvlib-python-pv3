@@ -25,8 +25,8 @@ log = setup_logger()
 def results_export_modelchain(mc):
     mc_ac = mc.ac
     annual_yield = mc_ac.sum() / 1000
+    system_name = mc.system.name
 
-    log.info(f'Annual yield: {annual_yield}')
-    # ToDo: Get name from modelchain
+    log.info(f'Annual yield for {system_name}: {annual_yield}')
 
     return annual_yield
