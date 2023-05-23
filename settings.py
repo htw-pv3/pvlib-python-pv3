@@ -21,6 +21,7 @@ import pandas as pd
 from sqlalchemy import *
 
 import logging
+
 log = logging.getLogger(__name__)
 
 """parameter"""
@@ -28,6 +29,7 @@ log_file = 'pv3.log'
 
 HTW_LAT = 52.45544
 HTW_LON = 13.52481
+
 
 def setup_logger():
     """Configure logging in console and log file.
@@ -63,23 +65,26 @@ def setup_logger():
 
 def postgres_session():
     """SQLAlchemy session object with valid connection to local database
-
+    Inputs
+    -------
+    port : int
+        Database port
+    password : str
+        Database password
     Returns
     -------
     con : connection
         SQLAlchemy connection object.
-
-    TODO: Docstring + Use config.py
     """
 
     print('Please provide connection parameters to database:\n' +
           'Hit [Enter] to take defaults')
     host = 'localhost'  # input('host (default 127.0.0.1): ')
-    port = '5432'  # input('port (default 5432): ')
+    port = int(input('port (default 5432): ') or 5432)  # port = '5435'
     database = 'sonnja_db'  # input("database name (default 'sonnja_db'): ")
     user = 'sonnja'  # input('user (default postgres): ')
     password = input('password: ')
-    #password = getpass.getpass(prompt='password: ',
+    # password = getpass.getpass(prompt='password: ',
     #                           stream=sys.stderr)
     con = create_engine(
         'postgresql://' + '%s:%s@%s:%s/%s' % (user,
@@ -91,8 +96,28 @@ def postgres_session():
     return con
 
 
+def query_database(con, schema_name, table_name):
+    sql_query = text(f"""
+            SELECT  *
+            FROM    {schema_name}.{table_name}
+            """)
+    df = pd.read_sql_query(sql_query, con)
+    df = df.set_index('timestamp')
+    print(f'Query database {schema_name}.{table_name}')
+    return df
+
+
+def query_database_metadata(con, schema_name, table_name):
+    sql_query = text(
+        f"""SELECT obj_description('{schema_name}.{table_name}'::regclass);""")
+    meta_str = pd.read_sql_query(sql_query, con).loc[0, 'obj_description']
+
+    return meta_str
+
+
 def read_from_csv(file_name, sep=';'):
-    df = pd.read_csv(file_name, encoding='latin1', sep=sep, index_col=0, parse_dates=True)  # , skiprows=3)
+    df = pd.read_csv(file_name, encoding='latin1', sep=sep, index_col=0,
+                     parse_dates=True)  # , skiprows=3)
 
     return df
 
@@ -113,7 +138,7 @@ def write_to_csv(csv_name, df, append=True, index=True, sep=';'):
     sep : str
         seperator to be used while writing csv. Semicolon ';' is standard
     """
-    #if os.path.exists(os.path.dirname(csv_name)):
+    # if os.path.exists(os.path.dirname(csv_name)):
     #    os.remove(os.path.dirname(csv_name))
 
     if append:
@@ -126,11 +151,11 @@ def write_to_csv(csv_name, df, append=True, index=True, sep=';'):
 
     with open(csv_name, mode=mode, encoding='utf-8') as file:
         df.to_csv(file, sep=sep,
-                    mode=mode,
-                    header=file.tell() == 0,
-                    line_terminator='\n',
-                    encoding='utf-8',
-                    index=index
-                 )
+                  mode=mode,
+                  header=file.tell() == 0,
+                  line_terminator='\n',
+                  encoding='utf-8',
+                  index=index
+                  )
 
     log.info(f'Write data to file: {csv_name} with append-mode={append}')
