@@ -153,7 +153,7 @@ def setup_htw_pvsystem_wr1():
                          albedo=0.2,
                          modules_per_string=10,
                          strings_per_inverter=3,
-                         name='HTW_WR1')
+                         name='wr1')
 
     return model_wr1
 
@@ -176,7 +176,7 @@ def setup_htw_pvsystem_wr2():
                          albedo=0.2,
                          modules_per_string=11,
                          strings_per_inverter=1,
-                         name='HTW_WR2')
+                         name='wr2')
 
     return model_wr2
 
@@ -197,7 +197,7 @@ def setup_htw_pvsystem_wr3():
                          albedo=0.2,
                          modules_per_string=14,
                          strings_per_inverter=1,
-                         name='HTW_WR3')
+                         name='wr3')
 
     return model_wr3
 
@@ -218,7 +218,7 @@ def setup_htw_pvsystem_wr4():
                          albedo=0.2,
                          modules_per_string=13,
                          strings_per_inverter=1,
-                         name='HTW_WR4')
+                         name='wr4')
 
     return model_wr4
 
@@ -239,7 +239,7 @@ def setup_htw_pvsystem_wr5():
                          albedo=0.2,
                          modules_per_string=10,
                          strings_per_inverter=3,
-                         name='HTW_WR5')
+                         name='wr5')
 
     return model_wr5
 
