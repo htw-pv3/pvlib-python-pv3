@@ -133,7 +133,7 @@ def get_aleo_s19_245():
 def get_aleo_s19_285():
     """Import Aleo S19 285 W PV-Modul"""
     sam_cec_mod = pvlib.pvsystem.retrieve_sam('CECMod')
-    aleo_s19_285 = sam_cec_mod['Aleo_Solar_S19Y285'].copy()
+    aleo_s19_285 = sam_cec_mod['Aleo_Solar_S19y285'].copy()
     aleo_s19_285['STC'] = 285.
     aleo_s19_285['PTC'] = 261.25
     aleo_s19_285['V_mp_ref'] = 31.3
@@ -170,7 +170,17 @@ def get_schott_asi_105():
     # All other values were taken from the data sheet.
 
 if __name__ == "__main__":
+    print('Show inverters')
     sma = get_sma_sb_3000hf()
     print(sma)
     dan = get_danfoss_dlx_2_9()
     print(dan)
+
+    aleo_s18_240 = get_aleo_s18_240
+    print(aleo_s18_240)
+    aleo_s19_245 = get_aleo_s19_245
+    print(aleo_s19_245)
+    aleo_s19_285 = get_aleo_s19_285()
+    print(aleo_s19_285)
+    aleo_asi_105 = get_schott_asi_105()
+    print(aleo_asi_105)
