@@ -62,6 +62,7 @@ if __name__ == "__main__":
     df_htw = df_htw.merge(df_dhi[['dhi', 'dni']], left_index=True, right_index=True)
     df_htw_select = df_htw.loc[:, ["ghi", "dhi", 'dni', "wind_speed", "temp_air"]]
     df_htw_pvlib = df_htw_select.resample('H').mean()
+    df_htw_pvlib = df_htw_pvlib.round(1)
 
     # read open_FRED weatherdata from sonnja_db
     schema = 'pv3'
@@ -69,6 +70,7 @@ if __name__ == "__main__":
     df_fred = query_database(con, schema, table)
     df_fred_select = df_fred.loc[:, ["ghi", "dhi", 'dni', "wind_speed", "temp_air"]]
     df_fred_pvlib = df_fred_select.resample('H').mean()
+    df_fred_pvlib = df_fred_pvlib.round(1)
 
     """Run pvlib model"""
     # location
@@ -81,7 +83,7 @@ if __name__ == "__main__":
     wr4 = setup_htw_pvsystem_wr4()
     wr5 = setup_htw_pvsystem_wr5()
     pv_systems = [wr1, wr2, wr3, wr4, wr5]
-    #weather = ['fred', 'htw']
+    weather = ['fred', 'htw']
     # ToDo: include second loop with weather
 
     # model chain
